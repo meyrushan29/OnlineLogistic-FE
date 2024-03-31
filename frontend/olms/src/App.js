@@ -22,7 +22,7 @@ function App() {
     <Routes>
       <Route path='/client' element={<Client/>}></Route>
       <Route path='/create' element={<CreateClient/>}></Route>
-      <Route path='/update' element={<UpdateClient/>}></Route>
+      <Route path='/update/:id' element={<UpdateClient/>}></Route>
     </Routes>
 
   </BrowserRouter>

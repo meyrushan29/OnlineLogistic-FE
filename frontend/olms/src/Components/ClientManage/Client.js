@@ -1,17 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 const Client = () => {
-  const [clients, setClients] = useState([
-    {
-      clientId: "CID1010",
-      clientName: "Meyrushan",
-      email: "meyrushan29@gmail.com",
-      phone: "0776309171",
-      address: "Colombo"
-    }
-  ]);
-
+  const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (event) => {
@@ -21,6 +15,21 @@ const Client = () => {
   const filteredClients = clients.filter((client) =>
     client.clientName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    axios.get('http://localhost:3001')
+      .then(result => setClients(result.data))
+      .catch(err => console.log(err));
+  }, []);
+
+  const handleDelete = (id) => {
+    axios.delete('http://localhost:3001/deleteClient/' + id)
+      .then(res => {
+        console.log(res);
+        window.location.reload();
+      })
+      .catch(errr => console.log(errr));
+  };
 
   return (
     <div className="container">
@@ -63,8 +72,8 @@ const Client = () => {
                       <td>{client.phone}</td>
                       <td>{client.address}</td>
                       <td>
-                      <Link to="/update" className="btn btn-success mb-4">Update</Link>
-                        <button className="btn btn-danger">Delete</button>
+                        <Link to={`/update/${client._id}`} className="btn btn-success me-2"><MdEdit /></Link>
+                        <button className="btn btn-danger" onClick={(e) => handleDelete(client._id)}><MdDelete /></button>
                       </td>
                     </tr>
                   ))}
@@ -79,3 +88,4 @@ const Client = () => {
 };
 
 export default Client;
+
