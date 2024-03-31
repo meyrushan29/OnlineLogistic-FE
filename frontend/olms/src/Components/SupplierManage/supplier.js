@@ -4,7 +4,7 @@ const supplier = () => {
   return (
 
 
-    <div>supplierId</div>
+    <div>supplierId defd</div>
 
   )
 }
