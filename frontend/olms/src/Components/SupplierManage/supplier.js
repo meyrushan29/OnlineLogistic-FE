@@ -2,7 +2,10 @@ import React from 'react'
 
 const supplier = () => {
   return (
-    <div>supplier</div>
+
+
+    <div>supplierId</div>
+
   )
 }
 
