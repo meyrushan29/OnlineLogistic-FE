@@ -23,12 +23,12 @@ const Client = () => {
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete('http://localhost:3001/deleteClient/' + id)
+    axios.delete(`http://localhost:3001/deleteClient/${id}`)
       .then(res => {
         console.log(res);
         window.location.reload();
       })
-      .catch(errr => console.log(errr));
+      .catch(err => console.log(err));
   };
 
   return (
@@ -75,9 +75,10 @@ const Client = () => {
                 </thead>
                 <tbody>
                   {clients
-                    .filter((client) =>
-                      client.clientName.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
+                    .filter((client) => {
+                      const name = client.clientName || "";
+                      return name.toLowerCase().includes(searchTerm.toLowerCase());
+                    })
                     .filter((client) => statusFilter === "" || client.status === statusFilter)
                     .map((client) => (
                       <tr key={client.clientId}>
