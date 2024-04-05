@@ -9,7 +9,10 @@ const UpdateClient = () => {
     clientName: "",
     email: "",
     phone: "",
-    address: ""
+    address: "",
+    gender: "",
+    billingAddress: "",
+    status: ""
   });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -17,8 +20,8 @@ const UpdateClient = () => {
   useEffect(() => {
     axios.get(`http://localhost:3001/getClient/${id}`)
       .then(response => {
-        const { clientId, clientName, email, phone, address } = response.data;
-        setClient({ clientId, clientName, email, phone, address });
+        const { clientId, clientName, email, phone, address, gender, billingAddress, status } = response.data;
+        setClient({ clientId, clientName, email, phone, address, gender, billingAddress, status });
       })
       .catch(err => console.log(err));
   }, [id]);
@@ -52,6 +55,15 @@ const UpdateClient = () => {
     if (!client.address.trim()) {
       errors.address = "Address is required";
     }
+    if (!client.gender.trim()) {
+      errors.gender = "Gender is required";
+    }
+    if (!client.billingAddress.trim()) {
+      errors.billingAddress = "Billing Address is required";
+    }
+    if (!client.status.trim()) {
+      errors.status = "Status is required";
+    }
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -63,7 +75,7 @@ const UpdateClient = () => {
       axios.put(`http://localhost:3001/updateClient/${id}`, client)
         .then(() => {
           console.log("Client updated successfully!");
-          navigate('../Client'); // Redirect to home or any other appropriate page
+          navigate('../Client');
         })
         .catch(err => console.log(err));
     }
@@ -138,6 +150,47 @@ const UpdateClient = () => {
               onChange={handleChange}
             />
             {errors.address && <p className="text-red-500">{errors.address}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="gender" className="block mb-1">Gender</label>
+            <select
+              id="gender"
+              name="gender"
+              value={client.gender}
+              className="form-control"
+              onChange={handleChange}
+            >
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            {errors.gender && <p className="text-red-500">{errors.gender}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="billingAddress" className="block mb-1">Billing Address</label>
+            <textarea
+              id="billingAddress"
+              name="billingAddress"
+              value={client.billingAddress}
+              className="form-control"
+              onChange={handleChange}
+            ></textarea>
+            {errors.billingAddress && <p className="text-red-500">{errors.billingAddress}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="status" className="block mb-1">Status</label>
+            <select
+              id="status"
+              name="status"
+              value={client.status}
+              className="form-control"
+              onChange={handleChange}
+            >
+              <option value="">Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            {errors.status && <p className="text-red-500">{errors.status}</p>}
           </div>
           <div>
             <button type="submit" className="btn btn-success">Update</button>
