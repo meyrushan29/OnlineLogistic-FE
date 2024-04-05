@@ -7,6 +7,9 @@ const CreateClient = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [gender, setGender] = useState('');
+  const [billingAddress, setBillingAddress] = useState('');
+  const [status, setStatus] = useState('');
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
@@ -15,23 +18,22 @@ const CreateClient = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        // Generate ClientId
         const clientId = `CID-${Math.floor(1000 + Math.random() * 9000)}`;
-
-        const response = await axios.post("http://localhost:3001/CreateClient", 
-        {
+        const response = await axios.post("http://localhost:3001/CreateClient", {
           clientId,
           clientName,
           email,
           phone,
-          address
+          address,
+          gender,
+          billingAddress,
+          status
         });
         console.log(response);
         setSuccessMessage('Client added successfully');
-        // Adjust this according to your routing logic
-        navigate('../Client'); // Assuming 'Client' is a route path
+        navigate('../Client'); // Redirect to client list page
       } catch (err) {
-        console.log(err.response.data); // Log more specific error info if available
+        console.log(err.response.data); // Log specific error info if available
       }
     }
   };
@@ -66,73 +68,86 @@ const CreateClient = () => {
       isValid = false;
     }
 
+    if (!gender.trim()) {
+      errors.gender = "Gender is required";
+      isValid = false;
+    }
+
+    if (!billingAddress.trim()) {
+      errors.billingAddress = "Billing Address is required";
+      isValid = false;
+    }
+
+    if (!status.trim()) {
+      errors.status = "Status is required";
+      isValid = false;
+    }
+
     setErrors(errors);
     return isValid;
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 justify-center items-center">
-      <div className="w-1/2 bg-white rounded-lg p-6 shadow-md">
-        <form onSubmit={handleSubmit}>
-          <h2 className="text-lg font-semibold mb-4">Add User</h2>
-          {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
-          <div className="mb-4">
-            <label htmlFor="clientName" className="block mb-1">Client Name</label>
-            <input
-              type="text"
-              id="clientName"
-              placeholder="Enter Client Name"
-              className="form-control"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-            />
-            {errors.clientName && <p className="text-red-500">{errors.clientName}</p>}
+    <div className="container">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-header">Add Client</div>
+            <div className="card-body">
+              {successMessage && <div className="alert alert-success">{successMessage}</div>}
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="clientName" className="form-label">Client Name</label>
+                  <input type="text" className="form-control" id="clientName" value={clientName} onChange={(e) => setClientName(e.target.value)} />
+                  {errors.clientName && <div className="text-danger">{errors.clientName}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="email" className="form-label">Email</label>
+                  <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  {errors.email && <div className="text-danger">{errors.email}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="phone" className="form-label">Phone</label>
+                  <input type="text" className="form-control" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                  {errors.phone && <div className="text-danger">{errors.phone}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="address" className="form-label">Address</label>
+                  <input type="text" className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                  {errors.address && <div className="text-danger">{errors.address}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="gender" className="form-label">Gender</label>
+                  <select className="form-select" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                  {errors.gender && <div className="text-danger">{errors.gender}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="billingAddress" className="form-label">Billing Address</label>
+                  <textarea className="form-control" id="billingAddress" rows="3" value={billingAddress} onChange={(e) => setBillingAddress(e.target.value)}></textarea>
+                  {errors.billingAddress && <div className="text-danger">{errors.billingAddress}</div>}
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="status" className="form-label">Status</label>
+                  <select className="form-select" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+                    <option value="">Select Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                  {errors.status && <div className="text-danger">{errors.status}</div>}
+                </div>
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </form>
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block mb-1">E-mail</label>
-            <input
-              type="email" // Change type to 'email' for email validation
-              id="email"
-              placeholder="Enter E-mail Address"
-              className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="phone" className="block mb-1">Phone</label>
-            <input
-              type="tel" // Change type to 'tel' for phone number input
-              id="phone"
-              placeholder="Enter Phone Number"
-              className="form-control"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-            {errors.phone && <p className="text-red-500">{errors.phone}</p>}
-          </div>
-          <div className="mb-4">
-            <label htmlFor="address" className="block mb-1">Address</label>
-            <input
-              type="text"
-              id="address"
-              placeholder="Enter Address"
-              className="form-control"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            {errors.address && <p className="text-red-500">{errors.address}</p>}
-          </div>
-          <div>
-            <button type="submit" className="btn btn-success">Submit</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
 };
 
 export default CreateClient;
-
 
