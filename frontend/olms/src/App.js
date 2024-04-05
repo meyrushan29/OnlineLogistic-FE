@@ -9,10 +9,11 @@ import CreateClient from './Components/ClientManage/CreateClient';
 import UpdateClient from './Components/ClientManage/UpdateClient';
 import CreateSupplier from './Components/SupplierManage/CreateSupplier';
 import UpdateSupplier from './Components/SupplierManage/UpdateSupplier';
- import Supplier from './Components/SupplierManage/Supplier';
+ import Supplier from './Components/SupplierManage/supplier';
  
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const [count, setCount] = useState (0)
   const [sidebarToggle, setSidebarToggle] = useState(false);
 

@@ -8,7 +8,7 @@ function Supplier() {
   const [searchOID, setSearchOID] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/')
+    axios.get('http://localhost:3001/sup')
       .then(result => setSuppliers(result.data))
       .catch(err => console.log(err));
   }, []);
