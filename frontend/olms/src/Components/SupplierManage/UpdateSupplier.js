@@ -93,7 +93,7 @@ function UpdateSupplier() {
     };
 
     return (
-        <div className='flex h-screen bg-indigo-100 justify-center items-center'>
+        <div className='flex h-screen justify-center items-center'>
             <div className='w-50 bg-gray-200 rounded p-3'>
                 <form onSubmit={handleSubmit}>
                     <h2 className='col-md-6 pl-14'>Edit Supplier Details</h2>
@@ -104,7 +104,7 @@ function UpdateSupplier() {
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="id">Supplier ID</label>
-                        <input type="text" id="id" value={SupplierID} readOnly placeholder='Enter ID' className="form-control" />
+                        <input type="text" id="id" value={SupplierID} readOnly placeholder='Enter ID' className="form-control"  />
                     </div>
                     <div className='mb-2'>
                         <label htmlFor="phoneNumber">Phone Number</label>

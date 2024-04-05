@@ -79,7 +79,7 @@ const CreateSupplier = () => {
     };
 
     return (
-        <div className="flex h-screen bg-indigo-100 justify-center items-center">
+        <div className="flex h-screen justify-center items-center">
             <div className="w-full md:w-1/2 bg-gray-200 rounded p-4">
                 <form onSubmit={handleSubmit}>
                     <h2 className="text-2xl font-bold col-md-6 pl-14">Add Supplier</h2>

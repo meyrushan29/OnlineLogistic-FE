@@ -82,8 +82,9 @@ const UpdateClient = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 justify-center items-center">
-      <div className="w-1/2 bg-white rounded-lg p-6 shadow-md">
+    
+    <div className="flex  justify-center items-center mt-5">
+      <div className="w-1/2  bg-gray-100 rounded-lg p-6 shadow-md">
         <form onSubmit={handleSubmit}>
           <h2 className="text-lg font-semibold mb-4">Update User</h2>
           <div className="mb-4">
@@ -198,6 +199,7 @@ const UpdateClient = () => {
         </form>
       </div>
     </div>
+
   );
 };
 
