@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaHome, FaUser, FaUsers, FaClipboardList, FaTruck, FaBox, FaWarehouse, FaHeadset, FaSignOutAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 const SideBar = ({ sidebarToggle }) => {
   return (
@@ -16,16 +17,16 @@ const SideBar = ({ sidebarToggle }) => {
           </div>
         </li>
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <div>
+          <Link to="/client" className="flex items-center">
             <FaUser className='inline-block w-6 h-6 mr-2 mt-2' />
             Client Management
-          </div>
+          </Link>
         </li>
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
-          <div>
+        <Link to="/supplier" className="flex items-center">
             <FaUsers className='inline-block w-6 h-6 mr-2 mt-2' />
             Supplier Management
-          </div>
+          </Link>
         </li>
         <li className='mb-2 rounded hover:shadow hover:bg-blue-500 py-2'>
           <div>
@@ -72,4 +73,3 @@ const SideBar = ({ sidebarToggle }) => {
 };
 
 export default SideBar;
-
