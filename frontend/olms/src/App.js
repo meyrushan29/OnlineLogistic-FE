@@ -9,7 +9,8 @@ import CreateClient from './Components/ClientManage/CreateClient';
 import UpdateClient from './Components/ClientManage/UpdateClient';
 import CreateSupplier from './Components/SupplierManage/CreateSupplier';
 import UpdateSupplier from './Components/SupplierManage/UpdateSupplier';
- import Supplier from './Components/SupplierManage/supplier';
+import Supplier from './Components/SupplierManage/supplier';
+import Home from './Components/Home/Home';
  
 
 function App() {
@@ -35,6 +36,11 @@ function App() {
       <Route path='/createsp' element={<CreateSupplier/>}></Route>
       <Route path='/updatesp/:id' element={<UpdateSupplier/>}></Route>  
     </Routes>
+
+    <Routes>
+      <Route path='/home' element={<Home/>}></Route>
+    </Routes>
+
 
   </BrowserRouter>
 

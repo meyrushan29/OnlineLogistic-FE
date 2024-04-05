@@ -28,7 +28,7 @@ function Supplier() {
   );
 
   return (
-    <div className="flex h-screen w-screen bg-indigo-100 justify-center items-center">
+    <div className="flex h-screen w-screen justify-center  mt-5">
       <div className="row justify-content-center">
         <div className="col-md-15">
           <table className="table table-striped bg-gray-200 w-full h-full ml-20">
@@ -45,7 +45,7 @@ function Supplier() {
             </div>
           
             <div className="table-responsive">
-              <table className=" table table-bordered text-center mt-4 pl-2">
+              <table className=" table table-bordered text-center mt-4  overflow-auto">
                 <thead className="thead-dark">
                   <tr>
                     <th>Name</th>
