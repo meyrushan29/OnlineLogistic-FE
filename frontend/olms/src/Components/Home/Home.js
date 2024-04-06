@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faTruck, faBoxes, faClipboardList, faExclamationTriangle, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 const Dashboard = () => {
   const [clientCount, setClientCount] = useState(0);
@@ -7,6 +9,7 @@ const Dashboard = () => {
   const [ordersCount, setOrdersCount] = useState(0);
   const [shipmentsCount, setShipmentsCount] = useState(0);
   const [warehouseCount, setWarehouseCount] = useState(0); // New state for warehouse count
+  // eslint-disable-next-line no-unused-vars
   const [currentDate, setCurrentDate] = useState('');
 
   // Function to get the current date
@@ -18,67 +21,62 @@ const Dashboard = () => {
 
   // Simulated API call to fetch data
   useEffect(() => {
-    // Simulated API call to fetch client count
-    fetch('api/clients')
-      .then(response => response.json())
-      .then(data => setClientCount(data.count))
-      .catch(error => console.error('Error fetching client count:', error));
+    const fetchData = async () => {
+      try {
+        const clientResponse = await fetch('api/clients');
+        const clientData = await clientResponse.json();
+        setClientCount(clientData.count);
 
-    // Simulated API call to fetch supplier count
-    fetch('api/suppliers')
-      .then(response => response.json())
-      .then(data => setSupplierCount(data.count))
-      .catch(error => console.error('Error fetching supplier count:', error));
+        const supplierResponse = await fetch('api/suppliers');
+        const supplierData = await supplierResponse.json();
+        setSupplierCount(supplierData.count);
 
-    // Simulated API call to fetch complaints count
-    fetch('api/complaints')
-      .then(response => response.json())
-      .then(data => setComplaintsCount(data.count))
-      .catch(error => console.error('Error fetching complaints count:', error));
+        const complaintsResponse = await fetch('api/complaints');
+        const complaintsData = await complaintsResponse.json();
+        setComplaintsCount(complaintsData.count);
 
-    // Simulated API call to fetch orders count
-    fetch('api/orders')
-      .then(response => response.json())
-      .then(data => setOrdersCount(data.count))
-      .catch(error => console.error('Error fetching orders count:', error));
+        const ordersResponse = await fetch('api/orders');
+        const ordersData = await ordersResponse.json();
+        setOrdersCount(ordersData.count);
 
-    // Simulated API call to fetch shipments count
-    fetch('api/shipments')
-      .then(response => response.json())
-      .then(data => setShipmentsCount(data.count))
-      .catch(error => console.error('Error fetching shipments count:', error));
+        const shipmentsResponse = await fetch('api/shipments');
+        const shipmentsData = await shipmentsResponse.json();
+        setShipmentsCount(shipmentsData.count);
 
-    // Simulated API call to fetch warehouse count
-    fetch('api/warehouse')
-      .then(response => response.json())
-      .then(data => setWarehouseCount(data.count))
-      .catch(error => console.error('Error fetching warehouse count:', error));
+        const warehouseResponse = await fetch('api/warehouse');
+        const warehouseData = await warehouseResponse.json();
+        setWarehouseCount(warehouseData.count);
 
-    // Set current date
-    setCurrentDate(getCurrentDate());
+        setCurrentDate(getCurrentDate());
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div className="flex justify-center ml-10 mr-auto">
       <div>
-        
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mt-5 mx-10">
-          <DashboardCard title="Client Count" count={clientCount} color="bg-blue-500" />
-          <DashboardCard title="Supplier Count" count={supplierCount} color="bg-green-500" />
-          <DashboardCard title="Complaints Count" count={complaintsCount} color="bg-red-500" />
-          <DashboardCard title="Orders Count" count={ordersCount} color="bg-yellow-500" />
-          <DashboardCard title="Shipments Count" count={shipmentsCount} color="bg-purple-500" />
-          <DashboardCard title="Warehouse Count" count={warehouseCount} color="bg-pink-500" /> {/* New card for warehouse count */}
+          <DashboardCard title="Total Clients" count={clientCount} color="bg-blue-500" icon={faUser} size="300px" />
+          <DashboardCard title="Total Suppliers" count={supplierCount} color="bg-green-500" icon={faTruck} size="300px" />
+          <DashboardCard title="Total Complaints" count={complaintsCount} color="bg-red-500" icon={faExclamationTriangle} size="300px" />
+          <DashboardCard title="Total Orders" count={ordersCount} color="bg-yellow-500" icon={faShoppingCart} size="300px" />
+          <DashboardCard title="Total Shipments" count={shipmentsCount} color="bg-purple-500" icon={faClipboardList} size="300px" />
+          <DashboardCard title="Total Warehouses" count={warehouseCount} color="bg-pink-500" icon={faBoxes} size="300px" /> {/* New card for warehouse count */}
         </div>
       </div>
     </div>
   );
 };
 
-const DashboardCard = ({ title, count, color }) => {
+const DashboardCard = ({ title, count, color, icon, size }) => {
   return (
-    <div className={`rounded-lg ${color} px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6 border border-yellow-500`} style={{width: '300px', height: '200px'}}>
-      <p className="text-sm font-medium text-gray-300 text-center">{title}</p>
+    <div className={`rounded-lg ${color} px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6 border border-yellow-500`} style={{width: size, height: '200px'}}>
+      <FontAwesomeIcon icon={icon} className="text-4xl text-gray-100 mx-auto" />
+      <p className="text-sm font-medium text-gray-300 text-center mt-2">{title}</p>
       <p className="text-2xl font-semibold text-gray-100 text-center">{count}</p>
     </div>
   );

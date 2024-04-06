@@ -54,7 +54,7 @@ const Client = () => {
   };
 
   return (
-    <div className="container-fluid mt-5">
+    <div className="container-fluid mt-1">
       <div className="row justify-content-end">
         <div className="col-lg-10">
           <div className="card shadow">
