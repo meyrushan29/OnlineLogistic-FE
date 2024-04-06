@@ -4,6 +4,8 @@ import axios from "axios";
 import { MdEdit, MdDelete, MdDescription } from "react-icons/md";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Client = () => {
   const [clients, setClients] = useState([]);
@@ -28,27 +30,23 @@ const Client = () => {
     axios.delete(`http://localhost:3001/deleteClient/${id}`)
       .then(res => {
         console.log(res);
+        toast.success('Client deleted successfully');
         window.location.reload();
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        toast.error('Error deleting client');
+      });
   };
 
   const generateReport = () => {
-    // Create a new jsPDF instance
     const doc = new jsPDF();
-
-    // Get the HTML element to be converted to PDF
     const table = document.querySelector('.table');
 
-    // Convert table to canvas using html2canvas
     html2canvas(table)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
-
-        // Add image data to PDF
         doc.addImage(imgData, 'PNG', 10, 10);
-
-        // Save the PDF
         doc.save('client_report.pdf');
       });
   };
@@ -134,4 +132,3 @@ const Client = () => {
 };
 
 export default Client;
-
