@@ -31,9 +31,12 @@ const CreateClient = () => {
         });
         console.log(response);
         setSuccessMessage('Client added successfully');
-        navigate('../Client'); // Redirect to client list page
+        setTimeout(() => {
+          setSuccessMessage('');
+          navigate('../Client');
+        }, 3000);
       } catch (err) {
-        console.log(err.response.data); // Log specific error info if available
+        console.log(err.response.data);
       }
     }
   };
@@ -150,4 +153,3 @@ const CreateClient = () => {
 };
 
 export default CreateClient;
-

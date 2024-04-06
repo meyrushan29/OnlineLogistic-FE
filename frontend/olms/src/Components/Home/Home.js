@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +23,6 @@ const Dashboard = () => {
   const [ordersCount, setOrdersCount] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [shipmentsCount, setShipmentsCount] = useState(0);
-  // eslint-disable-next-line no-unused-vars
   const [warehouseCount, setWarehouseCount] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
   const [currencyRates, setCurrencyRates] = useState({});
@@ -43,7 +43,6 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  // eslint-disable-next-line no-unused-vars
   const toggleNotification = () => {
     setShowNotification(!showNotification);
   };
@@ -56,16 +55,16 @@ const Dashboard = () => {
   return (
     <div className="flex justify-center ml-10 mr-auto mb-0">
       <div className='mt-0'>
-        <div className=" mx-10 ml-10  ">
+        <div className="mx-10 ml-10 dashboard-container" style={{ animation: loading ? '' : 'slide-in-bottom 0.5s ease-out forwards' }}>
           <h2 className="text-lg font-semibold text-gray-700 mb-1">Currency Rates</h2>
           <div className="grid grid-cols-2 gap-2">
             {loading ? (
               <p>Loading...</p>
             ) : (
               Object.entries(filteredCurrencyRates).map(([currency, rate]) => (
-                <div key={currency} className="bg-gray-100 p-2 rounded-lg">
+                <div key={currency} className="bg-gray-100 p-2 rounded-lg" style={{ animation: 'fade-in 0.5s ease-out forwards' }}>
                   <p className="text-sm font-semibold">{currency === 'USD' ? 'USD' : 'LKR'}</p>
-                  <p className="text-xs text-gray-600">{currency === 'USD' ? '$' : '₹'}{rate.toFixed(2)}</p>
+                  <p className="text-xs text-gray-600">{currency === 'USD' ? '$' : currency === 'LKR' ? 'Rs.' : ''}{rate.toFixed(2)}</p>
                 </div>
               ))
             )}
@@ -87,7 +86,7 @@ const Dashboard = () => {
 
 const DashboardCard = ({ title, count, color, icon, size, hasUpdate }) => {
   return (
-    <div className={`relative rounded-lg ${color} px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6 border border-yellow-500`} style={{ width: size, minWidth: '200px', maxWidth: '400px', height: '200px' }}>
+    <div className={`relative rounded-lg ${color} px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6 border border-yellow-500 dashboard-card`} style={{ width: size, minWidth: '200px', maxWidth: '400px', height: '200px', animation: 'fade-in 0.5s ease-out forwards' }}>
       {hasUpdate && (
         <div className="absolute top-0 right-0 mr-2 mt-2">
           <FontAwesomeIcon icon={faBell} className="text-yellow-500 text-lg" />
@@ -102,12 +101,10 @@ const DashboardCard = ({ title, count, color, icon, size, hasUpdate }) => {
 
 const Notification = () => {
   return (
-    <div className="fixed top-0 right-0 p-3 m-5 bg-blue-500 text-white font-bold">
+    <div className="fixed top-0 right-0 p-3 m-5 bg-blue-500 text-white font-bold notification" style={{ animation: 'slide-in-right 0.5s ease-out forwards' }}>
       New Update Available!
     </div>
   );
 };
 
 export default Dashboard;
-
-

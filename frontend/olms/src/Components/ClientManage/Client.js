@@ -27,16 +27,19 @@ const Client = () => {
   };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3001/deleteClient/${id}`)
-      .then(res => {
-        console.log(res);
-        toast.success('Client deleted successfully');
-        window.location.reload();
-      })
-      .catch(err => {
-        console.log(err);
-        toast.error('Error deleting client');
-      });
+    const confirmDelete = window.confirm("Are you sure you want to delete this client?");
+    if (confirmDelete) {
+      axios.delete(`http://localhost:3001/deleteClient/${id}`)
+        .then(res => {
+          console.log(res);
+          toast.success('Client deleted successfully');
+          window.location.reload();
+        })
+        .catch(err => {
+          console.log(err);
+          toast.error('Error deleting client');
+        });
+    }
   };
 
   const generateReport = () => {
@@ -84,45 +87,47 @@ const Client = () => {
                   Add Client
                 </Link>
               </div>
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>ClientID</th>
-                    <th>ClientName</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Gender</th>
-                    <th>Billing Address</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {clients
-                    .filter((client) => {
-                      const name = client.clientName || "";
-                      return name.toLowerCase().includes(searchTerm.toLowerCase());
-                    })
-                    .filter((client) => statusFilter === "" || client.status === statusFilter)
-                    .map((client) => (
-                      <tr key={client.clientId}>
-                        <td>{client.clientId}</td>
-                        <td>{client.clientName}</td>
-                        <td>{client.email}</td>
-                        <td>{client.phone}</td>
-                        <td>{client.address}</td>
-                        <td>{client.gender}</td>
-                        <td>{client.billingAddress}</td>
-                        <td>{client.status}</td>
-                        <td>
-                          <Link to={`/update/${client._id}`} className="btn btn-success me-2"><MdEdit /></Link>
-                          <button className="btn btn-danger" onClick={() => handleDelete(client._id)}><MdDelete /></button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              <div className="table-responsive">
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>ClientID</th>
+                      <th>ClientName</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Address</th>
+                      <th>Gender</th>
+                      <th>Billing Address</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {clients
+                      .filter((client) => {
+                        const name = client.clientName || "";
+                        return name.toLowerCase().includes(searchTerm.toLowerCase());
+                      })
+                      .filter((client) => statusFilter === "" || client.status === statusFilter)
+                      .map((client) => (
+                        <tr key={client.clientId}>
+                          <td>{client.clientId}</td>
+                          <td>{client.clientName}</td>
+                          <td>{client.email}</td>
+                          <td>{client.phone}</td>
+                          <td>{client.address}</td>
+                          <td>{client.gender}</td>
+                          <td>{client.billingAddress}</td>
+                          <td>{client.status}</td>
+                          <td>
+                            <Link to={`/update/${client._id}`} className="btn btn-success me-2"><MdEdit /></Link>
+                            <button className="btn btn-danger" onClick={() => handleDelete(client._id)}><MdDelete /></button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
