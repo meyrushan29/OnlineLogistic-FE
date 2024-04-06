@@ -93,8 +93,8 @@ function UpdateSupplier() {
     };
 
     return (
-        <div className='flex h-screen justify-center items-center'>
-            <div className='w-50 bg-gray-200 rounded p-3'>
+        <div className='flex h-75 justify-center items-center mt-10'>
+            <div className='w-50 bg-gray-100 rounded p-3'>
                 <form onSubmit={handleSubmit}>
                     <h2 className='col-md-6 pl-14'>Edit Supplier Details</h2>
                     <div className='mb-2'>
