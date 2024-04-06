@@ -28,10 +28,10 @@ function Supplier() {
   );
 
   return (
-    <div className="flex h-screen w-screen justify-center  mt-5">
+    <div className="flex mx-5 justify-center  mt-7">
       <div className="row justify-content-center">
         <div className="col-md-15">
-          <table className="table table-striped bg-gray-200 w-full h-full ml-20">
+          <table className="table table-striped bg-white w-full h-full ml-20">
             <h1 className="flex-grow items-center justify-between col-md-24 pl-20 pr-100 mt-6">Supplier List</h1>
             <h4 className="m-0 flex items-center">
               <Link to="/createsp" className="text-right ml-auto mt-0 mr-8" >Add Supplier+</Link>
