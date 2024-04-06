@@ -6,6 +6,7 @@ const Dashboard = () => {
   const [complaintsCount, setComplaintsCount] = useState(0);
   const [ordersCount, setOrdersCount] = useState(0);
   const [shipmentsCount, setShipmentsCount] = useState(0);
+  const [warehouseCount, setWarehouseCount] = useState(0); // New state for warehouse count
   const [currentDate, setCurrentDate] = useState('');
 
   // Function to get the current date
@@ -47,21 +48,27 @@ const Dashboard = () => {
       .then(data => setShipmentsCount(data.count))
       .catch(error => console.error('Error fetching shipments count:', error));
 
+    // Simulated API call to fetch warehouse count
+    fetch('api/warehouse')
+      .then(response => response.json())
+      .then(data => setWarehouseCount(data.count))
+      .catch(error => console.error('Error fetching warehouse count:', error));
+
     // Set current date
     setCurrentDate(getCurrentDate());
   }, []);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center ml-10 mr-auto">
       <div>
-        <h3 className="text-base font-semibold leading-6 text-gray-900 text-center">{currentDate}</h3>
-
+        
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 mt-5 mx-10">
           <DashboardCard title="Client Count" count={clientCount} color="bg-blue-500" />
           <DashboardCard title="Supplier Count" count={supplierCount} color="bg-green-500" />
           <DashboardCard title="Complaints Count" count={complaintsCount} color="bg-red-500" />
           <DashboardCard title="Orders Count" count={ordersCount} color="bg-yellow-500" />
           <DashboardCard title="Shipments Count" count={shipmentsCount} color="bg-purple-500" />
+          <DashboardCard title="Warehouse Count" count={warehouseCount} color="bg-pink-500" /> {/* New card for warehouse count */}
         </div>
       </div>
     </div>
@@ -78,5 +85,3 @@ const DashboardCard = ({ title, count, color }) => {
 };
 
 export default Dashboard;
-
-
