@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete, MdDescription } from "react-icons/md";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const Client = () => {
   const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+
+  useEffect(() => {
+    axios.get('http://localhost:3001')
+      .then(result => setClients(result.data))
+      .catch(err => console.log(err));
+  }, []);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -15,12 +23,6 @@ const Client = () => {
   const handleStatusFilter = (event) => {
     setStatusFilter(event.target.value);
   };
-
-  useEffect(() => {
-    axios.get('http://localhost:3001')
-      .then(result => setClients(result.data))
-      .catch(err => console.log(err));
-  }, []);
 
   const handleDelete = (id) => {
     axios.delete(`http://localhost:3001/deleteClient/${id}`)
@@ -31,8 +33,28 @@ const Client = () => {
       .catch(err => console.log(err));
   };
 
+  const generateReport = () => {
+    // Create a new jsPDF instance
+    const doc = new jsPDF();
+
+    // Get the HTML element to be converted to PDF
+    const table = document.querySelector('.table');
+
+    // Convert table to canvas using html2canvas
+    html2canvas(table)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+
+        // Add image data to PDF
+        doc.addImage(imgData, 'PNG', 10, 10);
+
+        // Save the PDF
+        doc.save('client_report.pdf');
+      });
+  };
+
   return (
-    <div className="container-fluid mt-5 ">
+    <div className="container-fluid mt-5">
       <div className="row justify-content-end">
         <div className="col-lg-10">
           <div className="card shadow">
@@ -56,9 +78,14 @@ const Client = () => {
                   <option value="Inactive">Inactive</option>
                 </select>
               </div>
-              <Link to="/create" className="btn btn-success mb-4">
-                Add +
-              </Link>
+              <div className="mb-4">
+                <button className="btn btn-primary me-2" onClick={generateReport}>
+                  Generate Report <MdDescription />
+                </button>
+                <Link to="/create" className="btn btn-success">
+                  Add Client
+                </Link>
+              </div>
               <table className="table table-bordered">
                 <thead>
                   <tr>
