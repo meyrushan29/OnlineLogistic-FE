@@ -28,60 +28,54 @@ function Supplier() {
   );
 
   return (
-    <div className="flex h-screen w-screen justify-center  mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-15">
-          <table className="table table-striped bg-gray-200 w-full h-full ml-20">
-            <h1 className="flex-grow items-center justify-between col-md-24 pl-20 pr-100 mt-6">Supplier List</h1>
-            <h4 className="m-0 flex items-center">
-              <Link to="/createsp" className="text-right ml-auto mt-0 mr-8" >Add Supplier+</Link>
-            </h4>
-            
-            <div className="grid grid-cols-2 w-75 gap-10 mt-4 ml-auto mr-auto">
-              <input type="text" id="name" placeholder="Search supplier name" className="form-control p-2"
-                value={searchName}  onChange={(e) => setSearchName(e.target.value)} />
-              <input type="text" id="OID" placeholder="Search  OID" className="form-control p-2"
-                value={searchOID}  onChange={(e) => setSearchOID(e.target.value)} />
-            </div>
-          
-            <div className="table-responsive">
-              <table className=" table table-bordered text-center mt-4  overflow-auto">
-                <thead className="thead-dark">
-                  <tr>
-                    <th>Name</th>
-                    <th>Supplier ID</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
-                    <th>Company Name</th>
-                    <th>Order ID</th>
-                    <th>Country</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSuppliers.map((supplier, index) => (
-                    <tr key={index}>
-                      <td>{supplier.Name}</td>
-                      <td>{supplier.SupplierID}</td> {/* Display Supplier ID */}
-                      <td>{supplier.PhoneNumber}</td>
-                      <td>{supplier.Email}</td>
-                      <td>{supplier.CompanyName}</td>
-                      <td>{supplier.OrderID}</td>
-                      <td>{supplier.Country}</td>
-                      <td>
-                        <Link to={`/updatesp/${supplier._id}`} className="bg-rose-800 text-white px-4 py-2 rounded mr-2">Edit</Link>
-                        <button className="bg-cyan-800 text-white px-4 py-2 rounded mr-2" onClick={() => handleDelete(supplier._id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+    <div className='container-fluid mt-1'>
+    <div className="h-full w-75 flex flex-col items-center mr-4 ml-auto ">
+      <div className="border rounded ">
+        <h1 className="text-4xl font-bold mt-8 mb-4 text-center">Supplier List</h1>
+        
+          <Link to="/createsp" className="block text-center mb-4 text-2xl">Add Supplier+</Link>
+        
+        <div className="grid  sm:grid-cols-3 gap-8 ml-20 mr-20">
+            <input type="text" id="name" placeholder="Search supplier name" className="form-input p-2" value={searchName} onChange={(e) => setSearchName(e.target.value)} />
+            <input type="text" id="OID" placeholder="Search OID" className="form-input p-2" value={searchOID} onChange={(e) => setSearchOID(e.target.value)} />
+        </div>
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full text-base">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Supplier ID</th>
+                <th className="px-4 py-3">Phone Number</th>
+                <th className="px-4 py-3">Email</th>
+                <th className="px-4 py-3">Company Name</th>
+                <th className="px-4 py-3">Order ID</th>
+                <th className="px-4 py-3">Country</th>
+                <th className="px-4 py-3">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSuppliers.map((supplier, index) => (
+                <tr key={index} className="border-b">
+                  <td className="px-4 py-3">{supplier.Name}</td>
+                  <td className="px-4 py-3">{supplier.SupplierID}</td>
+                  <td className="px-4 py-3">{supplier.PhoneNumber}</td>
+                  <td className="px-4 py-3">{supplier.Email}</td>
+                  <td className="px-4 py-3">{supplier.CompanyName}</td>
+                  <td className="px-4 py-3">{supplier.OrderID}</td>
+                  <td className="px-4 py-3">{supplier.Country}</td>
+                  <td className="px-4 py-3 flex justify-center">
+                    <Link to={`/updatesp/${supplier._id}`} className="bg-rose-800 text-white px-3 py-2 rounded mr-2">Edit</Link>
+                    <button className="bg-cyan-800 text-white px-3 py-2 rounded mr-2" onClick={() => handleDelete(supplier._id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
     </div>
+    </div>
   );
 }
 
-export default Supplier
+export default Supplier;
