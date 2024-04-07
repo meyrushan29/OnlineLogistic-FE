@@ -4,19 +4,48 @@ import axios from "axios";
 import { MdEdit, MdDelete, MdDescription } from "react-icons/md";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  Grid,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
+} from "@material-ui/core";
 
 const Client = () => {
   const [clients, setClients] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:3001')
-      .then(result => setClients(result.data))
-      .catch(err => console.log(err));
+    axios
+      .get("http://localhost:3001")
+      .then((result) => {
+        setClients(result.data);
+        setFilteredClients(result.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    const filtered = clients.filter(client => {
+      const name = client.clientName || "";
+      return name.toLowerCase().includes(searchTerm.toLowerCase());
+    }).filter(client => statusFilter === "" || client.status === statusFilter);
+    setFilteredClients(filtered);
+  }, [clients, searchTerm, statusFilter]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -29,109 +58,119 @@ const Client = () => {
   const handleDelete = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this client?");
     if (confirmDelete) {
-      axios.delete(`http://localhost:3001/deleteClient/${id}`)
-        .then(res => {
+      axios
+        .delete(`http://localhost:3001/deleteClient/${id}`)
+        .then((res) => {
           console.log(res);
-          toast.success('Client deleted successfully');
-          window.location.reload();
+          toast.success("Client deleted successfully");
+          setClients(clients.filter((client) => client._id !== id));
+          setFilteredClients(filteredClients.filter((client) => client._id !== id));
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
-          toast.error('Error deleting client');
+          toast.error("Error deleting client");
         });
     }
   };
 
   const generateReport = () => {
     const doc = new jsPDF();
-    const table = document.querySelector('.table');
+    const table = document.querySelector(".table");
 
-    html2canvas(table)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        doc.addImage(imgData, 'PNG', 10, 10);
-        doc.save('client_report.pdf');
-      });
+    html2canvas(table).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      doc.addImage(imgData, "PNG", 10, 10);
+      doc.save("client_report.pdf");
+    });
   };
 
   return (
-    <div className="container-fluid mt-1">
-      <div className="row justify-content-end">
-        <div className="col-lg-10">
-          <div className="card shadow">
+    <div className="container-fluid mt-2 mb-2">
+      <Grid container justifyContent="flex-end">
+
+        <Grid item xs={12} md={10}>
+          <Paper elevation={3}>
             <div className="card-header bg-white">
               <h5 className="card-title mb-0">Client List</h5>
             </div>
             <div className="card-body">
-              <div className="mb-4">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search by Client Name"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-              </div>
-              <div className="mb-4">
-                <select className="form-select" onChange={handleStatusFilter}>
-                  <option value="">Filter by Status</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-              <div className="mb-4">
-                <button className="btn btn-primary me-2" onClick={generateReport}>
-                  Generate Report <MdDescription />
-                </button>
-                <Link to="/create" className="btn btn-success">
-                  Add Client
-                </Link>
-              </div>
-              <div className="table-responsive">
-                <table className="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>ClientID</th>
-                      <th>ClientName</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Address</th>
-                      <th>Gender</th>
-                      <th>Billing Address</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {clients
-                      .filter((client) => {
-                        const name = client.clientName || "";
-                        return name.toLowerCase().includes(searchTerm.toLowerCase());
-                      })
-                      .filter((client) => statusFilter === "" || client.status === statusFilter)
-                      .map((client) => (
-                        <tr key={client.clientId}>
-                          <td>{client.clientId}</td>
-                          <td>{client.clientName}</td>
-                          <td>{client.email}</td>
-                          <td>{client.phone}</td>
-                          <td>{client.address}</td>
-                          <td>{client.gender}</td>
-                          <td>{client.billingAddress}</td>
-                          <td>{client.status}</td>
-                          <td>
-                            <Link to={`/update/${client._id}`} className="btn btn-success me-2"><MdEdit /></Link>
-                            <button className="btn btn-danger" onClick={() => handleDelete(client._id)}><MdDelete /></button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={6} md={4}>
+                  <TextField
+                    type="text"
+                    label="Search by Client Name"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={6} sm={3} md={3}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel htmlFor="status-filter">Status</InputLabel>
+                    <Select
+                      value={statusFilter}
+                      onChange={handleStatusFilter}
+                      label="Status"
+                      inputProps={{ id: "status-filter" }}
+                    >
+                      <MenuItem value="">None</MenuItem>
+                      <MenuItem value="Active">Active</MenuItem>
+                      <MenuItem value="Inactive">Inactive</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6} sm={3} md={5} container justifyContent="flex-end" alignItems="center">
+                  <Button variant="contained" color="primary" onClick={generateReport} style={{ marginRight: '10px' }}>
+                    Generate Report <MdDescription />
+                  </Button>
+                  <Link to="/create" className="btn btn-success">
+                    Add Client
+                  </Link>
+                </Grid>
+              </Grid>
             </div>
-          </div>
-        </div>
-      </div>
+            <TableContainer style={{ overflowX: "auto" }}>
+              <Table className="table" size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell><strong>Client ID</strong></TableCell>
+                    <TableCell><strong>Client Name</strong></TableCell>
+                    <TableCell><strong>Email</strong></TableCell>
+                    <TableCell><strong>Phone</strong></TableCell>
+                    <TableCell><strong>Address</strong></TableCell>
+                    <TableCell><strong>Gender</strong></TableCell>
+                    <TableCell><strong>Billing Address</strong></TableCell>
+                    <TableCell><strong>Status</strong></TableCell>
+                    <TableCell align="center"><strong>Action</strong></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredClients.map((client) => (
+                    <TableRow key={client.clientId}>
+                      <TableCell>{client.clientId}</TableCell>
+                      <TableCell>{client.clientName}</TableCell>
+                      <TableCell>{client.email}</TableCell>
+                      <TableCell>{client.phone}</TableCell>
+                      <TableCell>{client.address}</TableCell>
+                      <TableCell>{client.gender}</TableCell>
+                      <TableCell>{client.billingAddress}</TableCell>
+                      <TableCell>{client.status}</TableCell>
+                      <TableCell align="center">
+                        <Link to={`/update/${client._id}`} className="btn btn-success me-2">
+                          <MdEdit />
+                        </Link>
+                        <Button variant="contained" color="secondary" onClick={() => handleDelete(client._id)}>
+                          <MdDelete />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Grid>
+      </Grid>
     </div>
   );
 };
