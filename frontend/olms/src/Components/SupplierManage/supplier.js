@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
-// eslint-disable-next-line no-unused-vars
-import { Link } from 'react-router-dom';
+import { Button, TextField } from '@mui/material';
 import axios from 'axios';
+import { Table } from 'react-bootstrap';
 
 const Supplier = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchName, setSearchName] = useState('');
   const [searchOID, setSearchOID] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:3001/sup')
-      .then(result => setSuppliers(result.data))
+      .then(result => {
+        setSuppliers(result.data);
+        const uniqueCategories = Array.from(new Set(result.data.map(supplier => supplier.Category)));
+        setCategories(uniqueCategories);
+      })
       .catch(err => console.log(err));
   }, []);
 
@@ -28,7 +34,8 @@ const Supplier = () => {
 
   const filteredSuppliers = suppliers.filter(supplier =>
     supplier.Name.toLowerCase().includes(searchName.toLowerCase()) &&
-    supplier.OrderID.toLowerCase().includes(searchOID.toLowerCase())
+    supplier.OrderID.toLowerCase().includes(searchOID.toLowerCase()) &&
+    (selectedCategory ? supplier.Category === selectedCategory : true)
   );
 
   const handleAddSupplier = () => {
@@ -46,67 +53,77 @@ const Supplier = () => {
   };
 
   return (
-    <div className="flex justify-center mt-7 ml-28">
-      <div className="row justify-content-center">
-        <div className="col-md-15">
-          <div className="border rounded p-4 ml-32">
-            <h1 className="flex-grow items-center justify-between col-md-24  ">Supplier List</h1>
-            <h4 className="m-0 flex items-center">
-              <button onClick={handleAddSupplier} className="text-right ml-auto mt-0 mr-auto items-center bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">Add Supplier+</button>
-            </h4>
-            <div className="grid grid-cols-2 w-75 gap-10  mt-4 ml-auto mr-auto">
-              <input
-                type="text"
-                id="name"
-                placeholder="Search supplier name"
-                className="form-control p-2"
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-              />
-              <input
-                type="text"
-                id="OID"
-                placeholder="Search  OID"
-                className="form-control p-2"
-                value={searchOID}
-                onChange={(e) => setSearchOID(e.target.value)}
-              />
-            </div>
-            <div className="table-responsive bg-gray-100 mt-3">
-              <table className="table table-bordered  text-center mt-4 overflow-auto">
-                <thead className="thead-dark  ">
-                  <tr>
-                    <th className="column-heading">Name</th>
-                    <th className="column-heading">Supplier ID</th>
-                    <th className="column-heading">Phone Number</th>
-                    <th className="column-heading">Email</th>
-                    <th className="column-heading">Company Name</th>
-                    <th className="column-heading">Order ID</th>
-                    <th className="column-heading">Country</th>
-                    <th className="column-heading">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredSuppliers.map((supplier, index) => (
-                    <tr key={index}>
-                      <td>{supplier.Name}</td>
-                      <td>{supplier.SupplierID}</td>
-                      <td>{supplier.PhoneNumber}</td>
-                      <td>{supplier.Email}</td>
-                      <td>{supplier.CompanyName}</td>
-                      <td>{supplier.OrderID}</td>
-                      <td>{supplier.Country}</td>
-                      <td>
-                        <button onClick={() => handleEditSupplier(supplier._id)} className="bg-rose-800 text-white px-4 py-2 rounded mr-2">Edit</button>
-                        <button className="bg-cyan-800 text-white px-4 py-2 rounded mr-2" onClick={() => handleDelete(supplier._id)}>Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+    <div className="container-fluid w-full mt-2 mb-2 flex justify-end">
+      <div className="border rounded p-2">
+        <div className="flex justify-between mb-2 h-10">
+          <h1 className="text-3xl font-bold">Supplier List</h1>
+          <Button onClick={handleAddSupplier} variant="contained" color="primary">Add Supplier+</Button>
         </div>
+        <div className="grid grid-cols-2 gap-4 mb-2 mt-2">
+          <TextField
+            type="text"
+            id="name"
+            placeholder="Search supplier name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+          />
+          <TextField
+            type="text"
+            id="OID"
+            placeholder="Search OID"
+            value={searchOID}
+            onChange={(e) => setSearchOID(e.target.value)}
+          />
+          </div>
+          <div className='w-50 mb-3 mt-3'>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="form-select mt-1"
+            >
+              <option value="">All Categories</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Supplier ID</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+              <th>Company Name</th>
+              <th>Order ID</th>
+              <th>Country</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredSuppliers.map((supplier, index) => (
+              <tr key={index}>
+                <td>{supplier.Name}</td>
+                <td>{supplier.SupplierID}</td>
+                <td>{supplier.PhoneNumber}</td>
+                <td>{supplier.Email}</td>
+                <td>{supplier.CompanyName}</td>
+                <td>{supplier.OrderID}</td>
+                <td>{supplier.Country}</td>
+                <td>{supplier.Category}</td>
+                <td>
+                  <button onClick={() => handleEditSupplier(supplier._id)} className="bg-red-900 text-white font-bold py-1 px-2 rounded">
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(supplier._id)} className="bg-cyan-900 text-white font-bold py-1 ml-1 mt-2 px-2 rounded">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
   );
