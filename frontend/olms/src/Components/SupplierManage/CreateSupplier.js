@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
 const CreateSupplier = () => {
@@ -9,6 +10,7 @@ const CreateSupplier = () => {
   const [SupplierID, setSupplierID] = useState('');
   const [OrderID, setOrderID] = useState('');
   const [Country, setCountry] = useState('');
+  const [Category, setCategory] = useState('');
 
   // Function to generate a random ID
   const generateRandomID = () => {
@@ -41,11 +43,17 @@ const CreateSupplier = () => {
     return re.test(country);
   };
 
+  // Function to validate phone number
+  const validatePhoneNumber = (phoneNumber) => {
+    const re = /^\d{10}$/;
+    return re.test(phoneNumber);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Check if all required fields are filled
-    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country) {
+    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category) {
       alert('Please fill in all required fields');
       return;
     }
@@ -56,21 +64,25 @@ const CreateSupplier = () => {
       return;
     }
 
-    // Check if PhoneNumber contains only numbers
-    if (!/^\d+$/.test(PhoneNumber)) {
-      alert('Phone Number should contain only numbers');
-      return;
-    }
+    // Check if name contains only letters
     if (!validateName(Name)) {
       alert('Name should contain only letters');
       return;
     }
+
+    // Check if country contains only letters
     if (!validateCountry(Country)) {
       alert('Country should contain only letters');
       return;
     }
 
-    axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, OrderID, Country })
+    // Check if phone number is exactly 10 numbers and contains only numbers
+    if (!validatePhoneNumber(PhoneNumber)) {
+      alert('Phone Number should be 10 numbers and contain only numbers');
+      return;
+    }
+
+    axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, OrderID, Country,Category })
       .then(result => {
         console.log(result);
         // Redirect to the supplier list page after successful submission
@@ -80,36 +92,91 @@ const CreateSupplier = () => {
   };
 
   return (
-    <div className="flex h-75 mt-10 justify-center items-center">
-      <div className="w-full md:w-1/2  bg-gray-100  rounded p-4">
+    <div className="flex h-75 mt-8 justify-center items-center">
+      <div className="w-full md:w-1/2 bg-gray-100 rounded p-4">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold col-md-6 pl-14">Add Supplier</h2>
           <div className="mb-4">
-            <label htmlFor="name" className="block mb-2">Supplier Name</label>
-            <input type="text" id="name" placeholder="Enter Name" className="form-control"
-              onChange={(e) => setName(e.target.value)} required />
+            <TextField
+              id="name"
+              label="Supplier Name"
+              placeholder="Enter Name"
+              fullWidth
+              value={Name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="phoneNumber" className="block mb-2">Phone Number</label>
-            <input type="text" id="phoneNumber" placeholder="Enter Phone Number" className="form-control"
-              onChange={(e) => setPhoneNumber(e.target.value)} required />
+            <TextField
+              id="phoneNumber"
+              label="Phone Number"
+              placeholder="Enter Phone Number"
+              fullWidth
+              value={PhoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block mb-2">Email Address</label>
-            <input type="email" id="email" placeholder="Enter Email" className="form-control"
-              onChange={(e) => setEmail(e.target.value)} required />
+            <TextField
+              id="email"
+              label="Email Address"
+              type="email"
+              placeholder="Enter Email"
+              fullWidth
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="companyName" className="block mb-2">Company Name</label>
-            <input type="text" id="companyName" placeholder="Enter Company Name" className="form-control"
-              onChange={(e) => setCompanyName(e.target.value)} required />
+            <TextField
+              id="companyName"
+              label="Company Name"
+              placeholder="Enter Company Name"
+              fullWidth
+              value={CompanyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              required
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="Country" className="block mb-2">Country</label>
-            <input type="text" id="Country" placeholder="Enter Country" className="form-control"
-              onChange={(e) => setCountry(e.target.value)} required />
+            <FormControl fullWidth>
+              <InputLabel id="category-label">Supplier Category</InputLabel>
+              <Select
+                labelId="category-label"
+                id="category"
+                value={Category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <MenuItem value="">Select Category</MenuItem>
+                <MenuItem value="Electronics">Electronics</MenuItem>
+                <MenuItem value="Clothing and Apparel">Clothing and Apparel</MenuItem>
+                <MenuItem value="Home and Garden">Home and Garden</MenuItem>
+                <MenuItem value="Automotive Parts">Automotive Parts</MenuItem>
+                <MenuItem value="Health and Beauty">Health and Beauty</MenuItem>
+                <MenuItem value="Sporting Goods">Sporting Goods</MenuItem>
+                <MenuItem value="Furniture and Decor">Furniture and Decor</MenuItem>
+                <MenuItem value="others">Others</MenuItem>
+              </Select>
+            </FormControl>
           </div>
-          <button type="submit" className="bg-cyan-800 text-white px-4 py-2 rounded mr-2">Submit</button>
+          <div className="mb-4">
+            <TextField
+              id="Country"
+              label="Country"
+              placeholder="Enter Country"
+              fullWidth
+              value={Country}
+              onChange={(e) => setCountry(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="bg-cyan-900 text-white font-bold py-2 px-4 rounded">
+            Submit
+          </button>
         </form>
       </div>
     </div>
