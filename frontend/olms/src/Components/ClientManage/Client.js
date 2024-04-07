@@ -40,10 +40,10 @@ const Client = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = clients.filter(client => {
+    const filtered = clients.filter((client) => {
       const name = client.clientName || "";
       return name.toLowerCase().includes(searchTerm.toLowerCase());
-    }).filter(client => statusFilter === "" || client.status === statusFilter);
+    }).filter((client) => statusFilter === "" || client.status === statusFilter);
     setFilteredClients(filtered);
   }, [clients, searchTerm, statusFilter]);
 
@@ -87,7 +87,6 @@ const Client = () => {
   return (
     <div className="container-fluid mt-2 mb-2">
       <Grid container justifyContent="flex-end">
-
         <Grid item xs={12} md={10}>
           <Paper elevation={3}>
             <div className="card-header bg-white">
@@ -176,3 +175,4 @@ const Client = () => {
 };
 
 export default Client;
+
