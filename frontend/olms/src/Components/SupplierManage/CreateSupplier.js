@@ -92,65 +92,32 @@ const CreateSupplier = () => {
   };
 
   return (
-    <div className="flex h-75 mt-8 justify-center items-center">
-      <div className="w-full md:w-1/2 bg-gray-100 rounded p-4">
+    <div className="flex items-center justify-center   bg-gray-100">
+      <div className=' h-screen mt-8 w-75 ml-96 mr-10 '>
+      <div className="bg-white shadow-md rounded px-2 pt-2 pb-2 w-full max-w-md mt-10">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold col-md-6 pl-14">Add Supplier</h2>
           <div className="mb-4">
-            <TextField
-              id="name"
-              label="Supplier Name"
-              placeholder="Enter Name"
-              fullWidth
-              value={Name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <TextField id="name" label="Supplier Name" placeholder="Enter Name" fullWidth value={Name} onChange={(e) => setName(e.target.value)}
+              required/>
           </div>
           <div className="mb-4">
-            <TextField
-              id="phoneNumber"
-              label="Phone Number"
-              placeholder="Enter Phone Number"
-              fullWidth
-              value={PhoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
+            <TextField id="phoneNumber"
+              label="Phone Number" placeholder="Enter Phone Number" fullWidth value={PhoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
+              required/>
           </div>
           <div className="mb-4">
-            <TextField
-              id="email"
-              label="Email Address"
-              type="email"
-              placeholder="Enter Email"
-              fullWidth
-              value={Email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <TextField id="email" label="Email Address" type="email" placeholder="Enter Email" fullWidth value={Email} onChange={(e) => setEmail(e.target.value)}
+              required/>
           </div>
           <div className="mb-4">
-            <TextField
-              id="companyName"
-              label="Company Name"
-              placeholder="Enter Company Name"
-              fullWidth
-              value={CompanyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              required
-            />
+            <TextField id="companyName" label="Company Name" placeholder="Enter Company Name" fullWidth value={CompanyName} onChange={(e) => setCompanyName(e.target.value)}
+              required/>
           </div>
           <div className="mb-4">
             <FormControl fullWidth>
               <InputLabel id="category-label">Supplier Category</InputLabel>
-              <Select
-                labelId="category-label"
-                id="category"
-                value={Category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              >
+              <Select labelId="category-label" id="category" value={Category} onChange={(e) => setCategory(e.target.value)} required >
                 <MenuItem value="">Select Category</MenuItem>
                 <MenuItem value="Electronics">Electronics</MenuItem>
                 <MenuItem value="Clothing and Apparel">Clothing and Apparel</MenuItem>
@@ -164,20 +131,15 @@ const CreateSupplier = () => {
             </FormControl>
           </div>
           <div className="mb-4">
-            <TextField
-              id="Country"
-              label="Country"
-              placeholder="Enter Country"
-              fullWidth
-              value={Country}
-              onChange={(e) => setCountry(e.target.value)}
-              required
-            />
+            <TextField id="Country" label="Country" placeholder="Enter Country" fullWidth value={Country} onChange={(e) => setCountry(e.target.value)}
+              required />
           </div>
-          <button type="submit" className="bg-cyan-900 text-white font-bold py-2 px-4 rounded">
-            Submit
+          <button type="submit"
+              className="bg-cyan-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >Submit
           </button>
         </form>
+      </div>
       </div>
     </div>
   );

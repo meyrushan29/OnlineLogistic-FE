@@ -33,10 +33,11 @@ const Supplier = () => {
   };
 
   const filteredSuppliers = suppliers.filter(supplier =>
-    supplier.Name.toLowerCase().includes(searchName.toLowerCase()) &&
-    supplier.OrderID.toLowerCase().includes(searchOID.toLowerCase()) &&
+    (supplier.Name?.toLowerCase().includes(searchName.toLowerCase()) || false) &&
+    (supplier.OrderID?.toLowerCase().includes(searchOID.toLowerCase()) || false) &&
     (selectedCategory ? supplier.Category === selectedCategory : true)
   );
+  
 
   const handleAddSupplier = () => {
     const result = window.confirm("Do you want to add a new supplier?");
