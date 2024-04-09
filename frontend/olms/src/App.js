@@ -7,6 +7,10 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Client from './Components/ClientManage/Client';
 import CreateClient from './Components/ClientManage/CreateClient';
 import UpdateClient from './Components/ClientManage/UpdateClient';
+import CustomerSupport from './Components/CustomerManage/Customersupport';
+import CreateTicket from './Components/CustomerManage/CreateTicket';
+import UpdateTicket from './Components/CustomerManage/UpdateTicket';
+
 
 function App() {
   const [count, setCount] = useState (0)
@@ -23,8 +27,15 @@ function App() {
       <Route path='/client' element={<Client/>}></Route>
       <Route path='/create' element={<CreateClient/>}></Route>
       <Route path='/update/:id' element={<UpdateClient/>}></Route>
+      
     </Routes>
-
+    <Routes>
+    <Route path='/Customersupport' element={<CustomerSupport/>}></Route>
+    <Route path='/CreateTicket' element={<CreateTicket/>}></Route>
+    <Route path='/UpdateTicket/:id' element={<UpdateTicket/>}></Route>
+    
+    </Routes>
+    
   </BrowserRouter>
 
   );
