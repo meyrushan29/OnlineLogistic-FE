@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import {  FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
 function UpdateSupplier() {
   const { id } = useParams();
