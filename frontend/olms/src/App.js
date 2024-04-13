@@ -11,6 +11,9 @@ import CreateSupplier from './Components/SupplierManage/CreateSupplier';
 import UpdateSupplier from './Components/SupplierManage/UpdateSupplier';
 import Supplier from './Components/SupplierManage/supplier';
 import Home from './Components/Home/Home';
+import MakeOrder from './Components/OrderManage/MakeOrder';
+import OrderTable from './Components/OrderManage/OrderTable';
+import EditOrder from './Components/OrderManage/EditOrder';
 import Inventry from './Components/InventoryManage/Inventry';
 
  
@@ -41,11 +44,6 @@ function App() {
 
     <Routes>
       <Route path='/home' element={<Home/>}></Route>
-    </Routes>
-
-
-    <Routes>
-      <Route path='/inv' element={<Inventry/>}></Route>
     </Routes>
 
 
