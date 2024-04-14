@@ -14,6 +14,8 @@ import Home from './Components/Home/Home';
 import MakeOrder from './Components/OrderManage/MakeOrder';
 import OrderTable from './Components/OrderManage/OrderTable';
 import EditOrder from './Components/OrderManage/EditOrder';
+import Inventry from './Components/InventoryManage/Inventry';
+
  
 
 function App() {
@@ -44,11 +46,6 @@ function App() {
       <Route path='/home' element={<Home/>}></Route>
     </Routes>
 
-    <Routes>
-      <Route path='/make' element={<MakeOrder/>}></Route>
-      <Route path='/order' element={<OrderTable/>}></Route>
-      <Route path='/edit/:id' element={<EditOrder/>}></Route>
-    </Routes>
 
   </BrowserRouter>
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,10 +22,12 @@ const Dashboard = () => {
   const [ordersCount, setOrdersCount] = useState(0);
   // eslint-disable-next-line no-unused-vars
   const [shipmentsCount, setShipmentsCount] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [warehouseCount, setWarehouseCount] = useState(0);
   const [showNotification, setShowNotification] = useState(false);
   const [currencyRates, setCurrencyRates] = useState({});
   const [loading, setLoading] = useState(true);
+  const [userCountry, setUserCountry] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +44,20 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchUserCountry = async () => {
+      try {
+        const response = await axios.get('https://ipapi.co/json/');
+        setUserCountry(response.data.country_name);
+      } catch (error) {
+        console.error('Error fetching user country:', error);
+      }
+    };
+
+    fetchUserCountry();
+  }, []);
+
+  // eslint-disable-next-line no-unused-vars
   const toggleNotification = () => {
     setShowNotification(!showNotification);
   };
@@ -70,8 +85,13 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+        <div className='mt-1 mx-10'>
+          {userCountry && (
+            <p>User accessing from: <span className="text-yellow-500">{userCountry}</span></p>
+          )}
+        </div>
         {showNotification && <Notification />}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-4 mx-10">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-1 mx-10">
           <DashboardCard title="Total Clients" count={clientCount} color="bg-blue-500" icon={faUser} size="300px" hasUpdate={clientCount !== 0} />
           <DashboardCard title="Total Suppliers" count={supplierCount} color="bg-green-500" icon={faUsers} size="300px" hasUpdate={supplierCount !== 0} />
           <DashboardCard title="Total Complaints" count={complaintsCount} color="bg-red-500" icon={faExclamationTriangle} size="300px" hasUpdate={complaintsCount !== 0} />
