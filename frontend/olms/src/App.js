@@ -14,7 +14,7 @@ import Home from './Components/Home/Home';
 import MakeOrder from './Components/OrderManage/MakeOrder';
 import OrderTable from './Components/OrderManage/OrderTable';
 import EditOrder from './Components/OrderManage/EditOrder';
-import Inventry from './Components/InventoryManage/Inventry';
+
 
  
 
