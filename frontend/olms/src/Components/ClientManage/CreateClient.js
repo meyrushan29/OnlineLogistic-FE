@@ -1,151 +1,271 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+
 const CreateClient = () => {
+  const [clientId, setClientId] = useState('');
   const [clientName, setClientName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [gender, setGender] = useState('');
+  const [gender, setGender] = useState('male');
+  const [email, setEmail] = useState('');
   const [billingAddress, setBillingAddress] = useState('');
   const [status, setStatus] = useState('');
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
+
+  const [validationErrors, setValidationErrors] = useState({
+    clientId: '',
+    clientName: '',
+    phone: '',
+    address: '',
+    gender: '',
+    email: '',
+    billingAddress: '',
+    status: ''
+  });
+
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      try {
-        const clientId = `CID-${Math.floor(1000 + Math.random() * 9000)}`;
-        const response = await axios.post("http://localhost:3001/CreateClient", {
-          clientId,
-          clientName,
-          email,
-          phone,
-          address,
-          gender,
-          billingAddress,
-          status
-        });
-        console.log(response);
-        setSuccessMessage('Client added successfully');
+  const [toastMessage, setToastMessage] = useState('');
+
+  const handleGenderChange = (event) => {
+    setGender(event.target.value);
+  };
+
+  const validatePhone = (phoneNumber) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phoneNumber);
+  };
+
+  const validateClientId = (clientId) => {
+    const clientIdRegex = /^CID-\d{4}$/;
+    return clientIdRegex.test(clientId);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const errors = {};
+    if (!validateClientId(clientId)) {
+      errors.clientId = 'Invalid Client ID format. It should be in the format CID-3846.';
+    }
+    if (!clientName) {
+      errors.clientName = 'Client Name cannot be empty.';
+    }
+    if (!phone) {
+      errors.phone = 'Phone cannot be empty.';
+    } else if (!validatePhone(phone)) {
+      errors.phone = 'Invalid phone number.';
+    }
+    if (!address) {
+      errors.address = 'Address cannot be empty.';
+    }
+    if (!gender) {
+      errors.gender = 'Gender cannot be empty.';
+    }
+    if (!email) {
+      errors.email = 'Email cannot be empty.';
+    }
+    if (!billingAddress) {
+      errors.billingAddress = 'Billing Address cannot be empty.';
+    }
+    if (!status) {
+      errors.status = 'Status cannot be empty.';
+    }
+
+    setValidationErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/CreateClient', {
+        clientId,
+        clientName,
+        phone,
+        address,
+        gender,
+        email,
+        billingAddress,
+        status
+      });
+
+      if (response.status === 200) {
+        setToastMessage('Client added successfully!');
+
         setTimeout(() => {
-          setSuccessMessage('');
-          navigate('../Client');
-        }, 3000);
-      } catch (err) {
-        console.log(err.response.data);
+          setToastMessage('');
+          navigate('/client');
+        }, 1000);
+      } else {
+        console.error('Error adding client:', response.statusText);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        setValidationErrors({ ...validationErrors, clientId: 'Client with the same ID already exists.' });
+      } else {
+        console.error('Error:', error.message);
       }
     }
   };
 
-  const validateForm = () => {
-    let errors = {};
-    let isValid = true;
-
-    if (!clientName.trim()) {
-      errors.clientName = "Client Name is required";
-      isValid = false;
-    }
-
-    if (!email.trim()) {
-      errors.email = "Email is required";
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      errors.email = "Email is invalid";
-      isValid = false;
-    }
-
-    if (!phone.trim()) {
-      errors.phone = "Phone is required";
-      isValid = false;
-    } else if (!/^\d{10}$/.test(phone)) {
-      errors.phone = "Phone is invalid";
-      isValid = false;
-    }
-
-    if (!address.trim()) {
-      errors.address = "Address is required";
-      isValid = false;
-    }
-
-    if (!gender.trim()) {
-      errors.gender = "Gender is required";
-      isValid = false;
-    }
-
-    if (!billingAddress.trim()) {
-      errors.billingAddress = "Billing Address is required";
-      isValid = false;
-    }
-
-    if (!status.trim()) {
-      errors.status = "Status is required";
-      isValid = false;
-    }
-
-    setErrors(errors);
-    return isValid;
-  };
+  useEffect(() => {
+    return () => {
+      setToastMessage('');
+    };
+  }, []);
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-header">Add Client</div>
-            <div className="card-body">
-              {successMessage && <div className="alert alert-success">{successMessage}</div>}
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="clientName" className="form-label">Client Name</label>
-                  <input type="text" className="form-control" id="clientName" value={clientName} onChange={(e) => setClientName(e.target.value)} />
-                  {errors.clientName && <div className="text-danger">{errors.clientName}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
-                  <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                  {errors.email && <div className="text-danger">{errors.email}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">Phone</label>
-                  <input type="text" className="form-control" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                  {errors.phone && <div className="text-danger">{errors.phone}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="address" className="form-label">Address</label>
-                  <input type="text" className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)} />
-                  {errors.address && <div className="text-danger">{errors.address}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="gender" className="form-label">Gender</label>
-                  <select className="form-select" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                  {errors.gender && <div className="text-danger">{errors.gender}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="billingAddress" className="form-label">Billing Address</label>
-                  <textarea className="form-control" id="billingAddress" rows="3" value={billingAddress} onChange={(e) => setBillingAddress(e.target.value)}></textarea>
-                  {errors.billingAddress && <div className="text-danger">{errors.billingAddress}</div>}
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="status" className="form-label">Status</label>
-                  <select className="form-select" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
-                    <option value="">Select Status</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                  {errors.status && <div className="text-danger">{errors.status}</div>}
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-              </form>
-            </div>
+    <div className='fixed mt-16 ml-80 overflow-auto inset-0'>
+      <div className="bg-white py-6 sm:py-8 lg:py-2">
+        <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
+          <div className="mb-10 md:mb-10 text-lg">
+            <h2 className="mb-4 text-center text-lg font-bold text-gray-800 md:mb-6 lg:text-3xl">Add Client</h2>
           </div>
+
+          <form onSubmit={handleSubmit} className="mx-auto grid max-w-screen-md gap-4 sm:grid-cols-2">
+            {/* Client ID Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Client ID</label>
+              <input
+                id="client-id"
+                name="client-id"
+                value={clientId}
+                onChange={(e) => setClientId(e.target.value.toUpperCase())}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.clientId ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.clientId && <p className="text-red-500 text-sm mt-1">{validationErrors.clientId}</p>}
+            </div>
+
+            {/* Client Name Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Client Name</label>
+              <input
+                id="client-name"
+                name="client-name"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.clientName ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.clientName && <p className="text-red-500 text-sm mt-1">{validationErrors.clientName}</p>}
+            </div>
+
+            {/* Phone Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Phone</label>
+              <input
+                id="phone"
+                name="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.phone ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.phone && <p className="text-red-500 text-sm mt-1">{validationErrors.phone}</p>}
+            </div>
+
+            {/* Address Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Address</label>
+              <input
+                id="address"
+                name="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.address ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.address && <p className="text-red-500 text-sm mt-1">{validationErrors.address}</p>}
+            </div>
+
+            {/* Gender Input */}
+            <div className="flex gap-3">
+              <div>
+                <input
+                  id="male"
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={gender === 'male'}
+                  onChange={handleGenderChange}
+                  className="peer m-2"
+                />
+                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Male</label>
+              </div>
+              <div>
+                <input
+                  id="female"
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={gender === 'female'}
+                  onChange={handleGenderChange}
+                  className="peer m-2"
+                />
+                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Female</label>
+              </div>
+              {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
+            </div>
+
+            {/* Email Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Email</label>
+              <input
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.email ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.email && <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>}
+            </div>
+
+            {/* Billing Address Input */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Billing Address</label>
+              <input
+                id="billing-address"
+                name="billing-address"
+                value={billingAddress}
+                onChange={(e) => setBillingAddress(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.billingAddress ? 'ring-red-500' : ''}`}
+              />
+              {validationErrors.billingAddress && <p className="text-red-500 text-sm mt-1">{validationErrors.billingAddress}</p>}
+            </div>
+
+            {/* Status Select */}
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Status</label>
+              <select
+                id="status"
+                name="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.status ? 'ring-red-500' : ''}`}
+              >
+                <option value="">Select Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {validationErrors.status && <p className="text-red-500 text-sm mt-1">{validationErrors.status}</p>}
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex items-center justify-between sm:col-span-2">
+              <button
+                type="submit"
+                className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-orange-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base"
+              >
+                Add
+              </button>
+            </div>
+          </form>
+
+          {/* Toast Message */}
+          {toastMessage && (
+            <div className="text-green-500 text-sm mt-2 ml-[250px]">
+              {toastMessage}
+            </div>
+          )}
         </div>
       </div>
     </div>

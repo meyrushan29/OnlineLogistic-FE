@@ -30,20 +30,25 @@ const Client = () => {
   const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001")
-      .then((result) => {
-        setClients(result.data);
-        setFilteredClients(result.data);
-      })
-      .catch((err) => console.log(err));
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const result = await axios.get("http://localhost:3001");
+      setClients(result.data);
+      setFilteredClients(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const filtered = clients.filter((client) => {
       const name = client.clientName || "";
       return name.toLowerCase().includes(searchTerm.toLowerCase());
     }).filter((client) => statusFilter === "" || client.status === statusFilter);
+
     setFilteredClients(filtered);
   }, [clients, searchTerm, statusFilter]);
 
@@ -55,21 +60,19 @@ const Client = () => {
     setStatusFilter(event.target.value);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this client?");
+
     if (confirmDelete) {
-      axios
-        .delete(`http://localhost:3001/deleteClient/${id}`)
-        .then((res) => {
-          console.log(res);
-          toast.success("Client deleted successfully");
-          setClients(clients.filter((client) => client._id !== id));
-          setFilteredClients(filteredClients.filter((client) => client._id !== id));
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Error deleting client");
-        });
+      try {
+        await axios.delete(`http://localhost:3001/deleteClient/${id}`);
+        toast.success("Client deleted successfully");
+        setClients(clients.filter((client) => client._id !== id));
+        setFilteredClients(filteredClients.filter((client) => client._id !== id));
+      } catch (error) {
+        console.log(error);
+        toast.error("Error deleting client");
+      }
     }
   };
 
@@ -85,7 +88,7 @@ const Client = () => {
   };
 
   return (
-    <div className="container-fluid mt-2 mb-2">
+    <div className="container-fluid mt-0 mb-0">
       <Grid container justifyContent="flex-end">
         <Grid item xs={12} md={10}>
           <Paper elevation={3}>
@@ -118,8 +121,21 @@ const Client = () => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={6} sm={3} md={5} container justifyContent="flex-end" alignItems="center">
-                  <Button variant="contained" color="primary" onClick={generateReport} style={{ marginRight: '10px' }}>
+                <Grid
+                  item
+                  xs={6}
+                  sm={3}
+                  md={5}
+                  container
+                  justifyContent="flex-end"
+                  alignItems="center"
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={generateReport}
+                    style={{ marginRight: "10px" }}
+                  >
                     Generate Report <MdDescription />
                   </Button>
                   <Link to="/create" className="btn btn-success">
@@ -128,8 +144,14 @@ const Client = () => {
                 </Grid>
               </Grid>
             </div>
-            <TableContainer style={{ overflowX: "auto" }}>
-              <Table className="table" size="small">
+            <TableContainer
+              style={{
+                maxHeight: "calc(122vh - 400px)", // Increased height
+                width: "100%",
+                overflowX: "auto", // Enable horizontal scrolling
+              }}
+            >
+              <Table size="small" className="table">
                 <TableHead>
                   <TableRow>
                     <TableCell><strong>Client ID</strong></TableCell>
@@ -155,10 +177,17 @@ const Client = () => {
                       <TableCell>{client.billingAddress}</TableCell>
                       <TableCell>{client.status}</TableCell>
                       <TableCell align="center">
-                        <Link to={`/update/${client._id}`} className="btn btn-success me-2">
+                        <Link
+                          to={`/update/${client._id}`}
+                          className="btn btn-success me-2"
+                        >
                           <MdEdit />
                         </Link>
-                        <Button variant="contained" color="secondary" onClick={() => handleDelete(client._id)}>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => handleDelete(client._id)}
+                        >
                           <MdDelete />
                         </Button>
                       </TableCell>
@@ -175,4 +204,3 @@ const Client = () => {
 };
 
 export default Client;
-
