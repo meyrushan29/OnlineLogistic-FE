@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import React, { useState} from 'react';
+import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 
 const CreateSupplier = () => {
@@ -11,19 +11,9 @@ const CreateSupplier = () => {
   const [OrderID, setOrderID] = useState('');
   const [Country, setCountry] = useState('');
   const [Category, setCategory] = useState('');
+  const [Status, setStatus] = useState('');
 
-  // Function to generate a random ID
-  const generateRandomID = () => {
-    return Math.random().toString(36).substr(2, 9);
-  };
-
-  // Generate Supplier ID and Order ID when component mounts
-  useState(() => {
-    const newSupplierID = `SID${generateRandomID()}`;
-    const newOrderID = `OID${generateRandomID()}`;
-    setSupplierID(newSupplierID);
-    setOrderID(newOrderID);
-  }, []);
+   
 
   // Function to validate email
   const validateEmail = (email) => {
@@ -53,7 +43,7 @@ const CreateSupplier = () => {
     e.preventDefault();
 
     // Check if all required fields are filled
-    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category) {
+    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category || !Status || !SupplierID || !OrderID) {
       alert('Please fill in all required fields');
       return;
     }
@@ -82,7 +72,7 @@ const CreateSupplier = () => {
       return;
     }
 
-    axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, OrderID, Country,Category })
+    axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, OrderID, Country,Category,Status })
       .then(result => {
         console.log(result);
         // Redirect to the supplier list page after successful submission
@@ -93,28 +83,36 @@ const CreateSupplier = () => {
 
   return (
     <div className="flex items-center justify-center   bg-gray-100">
-      <div className=' h-screen mt-8 w-75 ml-96 mr-10 '>
-      <div className="bg-white shadow-md rounded px-2 pt-2 pb-2 w-full max-w-md mt-10">
+      <div className=' h-screen mt-2 w-75 ml-96 mr-10 '>
+      <div className="bg-white shadow-md rounded mb-4 px-2 pt-2 pb-2 w-full max-w-md mt-1">
         <form onSubmit={handleSubmit}>
           <h2 className="text-2xl font-bold col-md-6 pl-14">Add Supplier</h2>
-          <div className="mb-4">
+          <div className="mb-2">
             <TextField id="name" label="Supplier Name" placeholder="Enter Name" fullWidth value={Name} onChange={(e) => setName(e.target.value)}
               required/>
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
+            <TextField id="ID" label="Supplier ID" placeholder="Enter Supplier ID" fullWidth value={SupplierID} onChange={(e) => setSupplierID(e.target.value)}
+              required/>
+          </div>
+          <div className="mb-1">
             <TextField id="phoneNumber"
               label="Phone Number" placeholder="Enter Phone Number" fullWidth value={PhoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
               required/>
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
             <TextField id="email" label="Email Address" type="email" placeholder="Enter Email" fullWidth value={Email} onChange={(e) => setEmail(e.target.value)}
               required/>
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
             <TextField id="companyName" label="Company Name" placeholder="Enter Company Name" fullWidth value={CompanyName} onChange={(e) => setCompanyName(e.target.value)}
               required/>
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
+            <TextField id="OID" label="Order ID" placeholder="Enter Order ID" fullWidth value={OrderID} onChange={(e) => setOrderID(e.target.value)}
+              required/>
+          </div>
+          <div className="mb-1">
             <FormControl fullWidth>
               <InputLabel id="category-label">Supplier Category</InputLabel>
               <Select labelId="category-label" id="category" value={Category} onChange={(e) => setCategory(e.target.value)} required >
@@ -130,12 +128,22 @@ const CreateSupplier = () => {
               </Select>
             </FormControl>
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
+            <FormControl fullWidth>
+              <InputLabel id="Status-label">Status</InputLabel>
+              <Select labelId="Status-label" id="Status" value={Status} onChange={(e) => setStatus(e.target.value)} required >
+                <MenuItem value="">Select Status</MenuItem>
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+                </Select>
+            </FormControl>
+          </div>
+          <div className="mb-1">
             <TextField id="Country" label="Country" placeholder="Enter Country" fullWidth value={Country} onChange={(e) => setCountry(e.target.value)}
               required />
           </div>
           <button type="submit"
-              className="bg-cyan-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-cyan-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >Submit
           </button>
         </form>

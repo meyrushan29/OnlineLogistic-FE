@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
 
 function UpdateSupplier() {
@@ -14,21 +14,11 @@ function UpdateSupplier() {
   const [OrderID, setOrderID] = useState('');
   const [Country, setCountry] = useState('');
   const [Category, setCategory] = useState('');
+  const [Status, setStatus] = useState('');
 
   const navigate = useNavigate();
 
-  // Function to generate a random ID
-  const generateRandomID = () => {
-    return Math.random().toString(36).substr(2, 9);
-  };
-
-  // Generate Supplier ID and Order ID when component mounts
-  useEffect(() => {
-    const newSupplierID = `SID${generateRandomID()}`;
-    const newOrderID = `OID${generateRandomID()}`;
-    setSupplierID(newSupplierID);
-    setOrderID(newOrderID);
-  }, []);
+  
 
   useEffect(() => {
     axios.get(`http://localhost:3001/getSupplier/${id}`)
@@ -40,6 +30,9 @@ function UpdateSupplier() {
         setCompanyName(result.data.CompanyName);
         setCountry(result.data.Country);
         setCategory(result.data.Category);
+        setSupplierID(result.data.SupplierID);
+        setOrderID(result.data.OrderID);
+        setStatus(result.data.Status)
       })
       .catch(err => console.log(err));
   }, [id]);
@@ -63,7 +56,7 @@ function UpdateSupplier() {
     e.preventDefault();
 
     // Check if all required fields are filled
-    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country) {
+    if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Status || !SupplierID || !OrderID ) {
       alert('Please fill in all required fields');
       return;
     }
@@ -97,7 +90,7 @@ function UpdateSupplier() {
       return;
     }
 
-    axios.put(`http://localhost:3001/UpdateSupplier/${id}`, { Name, Email, PhoneNumber, CompanyName, Country, Category })
+    axios.put(`http://localhost:3001/UpdateSupplier/${id}`, { Name, Email, PhoneNumber, CompanyName, Country, Category ,SupplierID ,OrderID,Status })
       .then(result => {
         console.log(result);
         navigate('../supplier');
@@ -107,29 +100,35 @@ function UpdateSupplier() {
 
   return (
     <div className="flex items-center justify-center min-h-screen  bg-gray-100">
-      <div className=' h-screen  w-75 mt-12 ml-96 mr-10 '>
-      <div className="bg-white shadow-md rounded px-2 pt-2 pb-2 w-full max-w-md ">
+      <div className=' h-screen  w-75  ml-96 mr-10 '>
+      <div className="bg-white shadow-md rounded px-2 pt-2 pb-2 w-full max-w-md mt-2">
         <form onSubmit={handleSubmit}>
-          <h2 className='col-md-10 pl-0 mb-4'>Edit Supplier Details</h2>
-          <div className='mb-2'>
+          <h2 className='col-md-10 pl-0 mb-3'>Edit Supplier Details</h2>
+          <div className='mb-1'>
             <TextField id="name" label="Name" placeholder="Enter Name" fullWidth value={Name} onChange={(e) => setName(e.target.value)} required />
           </div>
-          <div className='mb-2'>
-            <TextField id="id" label="Supplier ID" placeholder="Enter ID" fullWidth value={SupplierID} InputProps={{ readOnly: true }} />
+          <div className="mb-1">
+            <TextField id="ID" label="Supplier ID" placeholder="Enter Supplier ID" fullWidth value={SupplierID} onChange={(e) => setSupplierID(e.target.value)}
+              required/>
           </div>
-          <div className='mb-2'>
+           
+          <div className='mb-1'>
             <TextField id="phoneNumber" label="Phone Number" placeholder="Enter Phone number" fullWidth value={PhoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}
                required />
           </div>
-          <div className='mb-2'>
+          <div className='mb-1'>
             <TextField id="email" label="Email" placeholder="Enter Email" fullWidth value={Email} onChange={(e) => setEmail(e.target.value)}
               required />
           </div>
-          <div className='mb-2'>
+          <div className='mb-1'>
             <TextField id="companyName" label="Company Name" placeholder="Enter Company Name" fullWidth value={CompanyName} onChange={(e) => setCompanyName(e.target.value)}
               required />
           </div>
-          <div className="mb-4">
+          <div className="mb-1">
+            <TextField id="OID" label="Order ID" placeholder="Enter Order ID" fullWidth value={OrderID} onChange={(e) => setOrderID(e.target.value)}
+              required/>
+          </div>
+          <div className="mb-1">
             <FormControl fullWidth>
               <InputLabel id="category-label">Supplier Category</InputLabel>
               <Select labelId="category-label" id="category" value={Category} onChange={(e) => setCategory(e.target.value)}
@@ -145,10 +144,17 @@ function UpdateSupplier() {
               </Select>
             </FormControl>
           </div>
-          <div className='mb-2'>
-            <TextField id="orderId" label="Order ID" placeholder="Enter Order ID" fullWidth value={OrderID} InputProps={{ readOnly: true }} />
+          <div className="mb-1">
+            <FormControl fullWidth>
+              <InputLabel id="Status-label">Status</InputLabel>
+              <Select labelId="Status-label" id="Status" value={Status} onChange={(e) => setStatus(e.target.value)} required >
+                <MenuItem value="">Select Status</MenuItem>
+                <MenuItem value="Active">Active</MenuItem>
+                <MenuItem value="Inactive">Inactive</MenuItem>
+                </Select>
+            </FormControl>
           </div>
-          <div className='mb-2'>
+          <div className='mb-1'>
             <TextField id="Country" label="Country" placeholder="Enter Country" fullWidth value={Country} onChange={(e) => setCountry(e.target.value)}
               required />
           </div>
