@@ -178,33 +178,7 @@ const CreateClient = () => {
             </div>
 
             {/* Gender Input */}
-            <div className="flex gap-3">
-              <div>
-                <input
-                  id="male"
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  checked={gender === 'male'}
-                  onChange={handleGenderChange}
-                  className="peer m-2"
-                />
-                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Male</label>
-              </div>
-              <div>
-                <input
-                  id="female"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  checked={gender === 'female'}
-                  onChange={handleGenderChange}
-                  className="peer m-2"
-                />
-                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Female</label>
-              </div>
-              {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
-            </div>
+           
 
             {/* Email Input */}
             <div>
@@ -248,12 +222,41 @@ const CreateClient = () => {
               </select>
               {validationErrors.status && <p className="text-red-500 text-sm mt-1">{validationErrors.status}</p>}
             </div>
+            <div className="flex gap-3">
+            <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Gender</label>
+
+              <div>
+                <input
+                  id="male"
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  checked={gender === 'male'}
+                  onChange={handleGenderChange}
+                  className="peer m-2"
+                />
+                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Male</label>
+              </div>
+              <div>
+                <input
+                  id="female"
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  checked={gender === 'female'}
+                  onChange={handleGenderChange}
+                  className="peer m-2"
+                />
+                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Female</label>
+              </div>
+              {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
+            </div>
 
             {/* Submit Button */}
             <div className="flex items-center justify-between sm:col-span-2">
               <button
                 type="submit"
-                className="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-orange-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base"
+                className="inline-block rounded-lg bg-green-400 px-8 py-3 text-center text-sm font-semibold md:text-base"
               >
                 Add
               </button>

@@ -88,16 +88,16 @@ const Client = () => {
   };
 
   return (
-    <div className="container-fluid mt-0 mb-0">
+    <div className="container-fluid mt-0 mb-0 px-5">
       <Grid container justifyContent="flex-end">
         <Grid item xs={12} md={10}>
           <Paper elevation={3}>
             <div className="card-header bg-white">
-              <h5 className="card-title mb-0">Client List</h5>
+              <h5 className="card-title mb-0 pl-10 pt-3">Client List</h5>
             </div>
-            <div className="card-body">
+            <div className="card-body ml-10">
               <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={4}> 
                   <TextField
                     type="text"
                     label="Search by Client Name"
@@ -106,7 +106,7 @@ const Client = () => {
                     fullWidth
                   />
                 </Grid>
-                <Grid item xs={6} sm={3} md={3}>
+                <Grid item xs={2} sm={2} md={2}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel htmlFor="status-filter">Status</InputLabel>
                     <Select
@@ -134,11 +134,11 @@ const Client = () => {
                     variant="contained"
                     color="primary"
                     onClick={generateReport}
-                    style={{ marginRight: "10px" }}
+                    style={{ marginRight: "20px" }}
                   >
                     Generate Report <MdDescription />
                   </Button>
-                  <Link to="/create" className="btn btn-success">
+                  <Link to="/create" className="btn btn-success mr-10">
                     Add Client
                   </Link>
                 </Grid>
