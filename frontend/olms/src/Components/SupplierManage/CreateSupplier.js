@@ -8,7 +8,6 @@ const CreateSupplier = () => {
   const [PhoneNumber, setPhoneNumber] = useState('');
   const [CompanyName, setCompanyName] = useState('');
   const [SupplierID, setSupplierID] = useState('');
-  const [OrderID, setOrderID] = useState('');
   const [Country, setCountry] = useState('');
   const [Category, setCategory] = useState('');
   const [Status, setStatus] = useState('');
@@ -44,7 +43,7 @@ const CreateSupplier = () => {
 
     try {
       // Check if all required fields are filled
-      if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category || !Status || !SupplierID || !OrderID) {
+      if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category || !Status || !SupplierID) {
         alert('Please fill in all required fields');
         return;
       }
@@ -73,7 +72,7 @@ const CreateSupplier = () => {
         return;
       }
 
-      axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, OrderID, Country, Category, Status })
+      axios.post("http://localhost:3001/CreateSupplier", { SupplierID, Name, Email, PhoneNumber, CompanyName, Country, Category, Status })
         .then(result => {
           console.log(result);
           setToastMessage('Supplier added successfully!');
@@ -117,9 +116,6 @@ const CreateSupplier = () => {
               <TextField id="companyName" label="Company Name" placeholder="Enter Company Name" fullWidth value={CompanyName} onChange={(e) => setCompanyName(e.target.value)} required />
             </div>
             <div className="mb-1">
-              <TextField id="OID" label="Order ID" placeholder="Enter Order ID" fullWidth value={OrderID} onChange={(e) => setOrderID(e.target.value)} required />
-            </div>
-            <div className="mb-1">
               <FormControl fullWidth>
                 <InputLabel id="category-label">Supplier Category</InputLabel>
                 <Select labelId="category-label" id="category" value={Category} onChange={(e) => setCategory(e.target.value)} required>
@@ -157,5 +153,3 @@ const CreateSupplier = () => {
 }
 
 export default CreateSupplier;
-
-

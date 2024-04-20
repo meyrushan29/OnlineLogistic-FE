@@ -73,37 +73,31 @@ const Supplier = () => {
   const generatePDF = () => {
     const doc = new jsPDF();
     doc.autoTable({
-      head: [['Name', 'Supplier ID', 'Phone Number', 'Email', 'Company Name', 'Order ID', 'Country', 'Supplier Category', 'Status']],
-      body: filteredSuppliers.map(supplier => [supplier.Name, supplier.SupplierID, supplier.PhoneNumber, supplier.Email, supplier.CompanyName, supplier.OrderID, supplier.Country, supplier.Category, supplier.Status]),
+      head: [['Name', 'Supplier ID', 'Phone Number', 'Email', 'Company Name', 'Country', 'Supplier Category', 'Status']],
+      body: filteredSuppliers.map(supplier => [supplier.Name, supplier.SupplierID, supplier.PhoneNumber, supplier.Email, supplier.CompanyName, supplier.Country, supplier.Category, supplier.Status]),
     });
     doc.save('supplier_list.pdf');
   };
 
   return (
-    <div className="container px-10 py-6 mt-0 mr-0 w-80 ">
-      <div className="bg-white border-8 rounded-lg shadow ml-40 w-screen">
-        <h1 className="text-3xl font-bold mb-4">Supplier List</h1>
+    
+    <div className="container px-10 py-6 w-60 mx-10">
+      <div className="bg-white border-8 rounded-lg shadow ml-40 ">
+        <h1 className="text-3xl font-bold mb-4 pl-10 pt-3">Supplier List</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <input
             type="text"
             placeholder="Search supplier name"
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
-          />
-          <input
-            type="text"
-            placeholder="Search OID"
-            value={searchOID}
-            onChange={(e) => setSearchOID(e.target.value)}
-            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm ml-8"
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 mb-4">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border border-gray-300 rounded-lg w-full mr-6 px-4 py-2 focus:outline-none"
+            className="border border-gray-300 rounded-lg w-full mr-6 px-4 py-2 focus:outline-none ml-4"
           >
             <option value="">All Categories</option>
             {categories.map((category, index) => (
@@ -122,27 +116,31 @@ const Supplier = () => {
           <div className='col-span-2 flex justify-end items-end'>
             <button
               onClick={handleDeleteSelected}
-              className={`bg-pink-700 hover:bg-blue-900 text-white font-bold  py-2 px-4 rounded-lg ${selectedSuppliers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-pink-700 hover:bg-blue-900 text-white font-bold  py-2 px-4 rounded-lg mr-2 ${selectedSuppliers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={selectedSuppliers.length === 0}
             >
               Delete Selected
             </button>
             <button
               onClick={handleAddSupplier}
-              className="ml-4 bg-red-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+              className="mr-2 bg-red-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
             >
               Add Supplier
             </button>
             <button
               onClick={generatePDF}
-              className="ml-4 bg-green-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+              className="mr-4 bg-green-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
             >
               Generate PDF
             </button>
           </div>
         </div>
-        <div className="ml-30">
-          <Table striped bordered hover className='border-1'>
+        <div className="" style={{
+                maxHeight: "calc(95vh - 400px)", // Increased height
+                width: "100%",
+                overflowX: "auto", // Enable horizontal scrolling
+              }}>
+          <Table striped bordered hover className='border-1 '>
             <thead>
               <tr>
                 <th>Name</th>
@@ -150,7 +148,6 @@ const Supplier = () => {
                 <th>Phone Number</th>
                 <th>Email</th>
                 <th>Company Name</th>
-                <th>Order ID</th>
                 <th>Country</th>
                 <th>Supplier Category</th>
                 <th>Status</th>
@@ -165,7 +162,6 @@ const Supplier = () => {
                   <td>{supplier.PhoneNumber}</td>
                   <td>{supplier.Email}</td>
                   <td>{supplier.CompanyName}</td>
-                  <td>{supplier.OrderID}</td>
                   <td>{supplier.Country}</td>
                   <td>{supplier.Category}</td>
                   <td>{supplier.Status}</td>
@@ -185,6 +181,7 @@ const Supplier = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 
