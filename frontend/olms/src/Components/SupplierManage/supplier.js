@@ -15,14 +15,19 @@ const Supplier = () => {
   const [selectedSuppliers, setSelectedSuppliers] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/sup')
-      .then(result => {
-        setSuppliers(result.data);
-        const uniqueCategories = Array.from(new Set(result.data.map(supplier => supplier.Category)));
-        setCategories(uniqueCategories);
-      })
-      .catch(err => console.log(err));
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const result = await axios.get('http://localhost:3001/sup');
+      setSuppliers(result.data);
+      const uniqueCategories = [...new Set(result.data.map(supplier => supplier.Category))];
+      setCategories(uniqueCategories);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleCheckboxChange = (supplierId) => {
     if (selectedSuppliers.includes(supplierId)) {
@@ -32,20 +37,15 @@ const Supplier = () => {
     }
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = async () => {
     if (window.confirm('Are you sure you want to delete the selected suppliers?')) {
-      axios.delete('http://localhost:3001/Deletesupplier/', { data: { ids: selectedSuppliers } })
-        .then(result => {
-          console.log(result);
-          // Refresh supplier list after deletion
-          axios.get('http://localhost:3001/sup')
-            .then(result => {
-              setSuppliers(result.data);
-              setSelectedSuppliers([]);
-            })
-            .catch(err => console.log(err));
-        })
-        .catch(err => console.log(err));
+      try {
+        await axios.delete('http://localhost:3001/Deletesupplier/', { data: { ids: selectedSuppliers } });
+        fetchData();
+        setSelectedSuppliers([]);
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -80,51 +80,46 @@ const Supplier = () => {
   };
 
   return (
-    <div className="container px-4 py-8 mt-2">
-      <div className="bg-white border-8 rounded-lg shadow mt-2 p-6">
+    <div className="container px-10 py-6 mt-0 mr-0 w-80 ">
+      <div className="bg-white border-8 rounded-lg shadow ml-40 w-screen">
         <h1 className="text-3xl font-bold mb-4">Supplier List</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <input
-              type="text"
-              placeholder="Search supplier name"
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
-            />
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="Search OID"
-              value={searchOID}
-              onChange={(e) => setSearchOID(e.target.value)}
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="Search supplier name"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
+          />
+          <input
+            type="text"
+            placeholder="Search OID"
+            value={searchOID}
+            onChange={(e) => setSearchOID(e.target.value)}
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none w-full shadow-sm"
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 mb-4">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="border border-gray-300 rounded-lg w-80 mr-6  h-15 px-4 py-2 focus:outline-none"
+            className="border border-gray-300 rounded-lg w-full mr-6 px-4 py-2 focus:outline-none"
           >
             <option value="">All Categories</option>
             {categories.map((category, index) => (
               <option key={index} value={category}>{category}</option>
             ))}
           </select>
-
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="border border-gray-300 rounded-lg ml-8 w-80 h-15 px-4 py-2 focus:outline-none"
+            className="border border-gray-300 rounded-lg w-full ml-6 px-4 py-2 focus:outline-none"
           >
             <option value="">All Statuses</option>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
           </select>
-          <div className='w-48 h-10 mt-6 ml-72'>
+          <div className='col-span-2 flex justify-end items-end'>
             <button
               onClick={handleDeleteSelected}
               className={`bg-pink-700 hover:bg-blue-900 text-white font-bold  py-2 px-4 rounded-lg ${selectedSuppliers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -132,26 +127,22 @@ const Supplier = () => {
             >
               Delete Selected
             </button>
-          </div>
-          <div className="w-48 h-10 mt-6 items-end ml-40 mr-6">
             <button
               onClick={handleAddSupplier}
-              className="bg-red-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+              className="ml-4 bg-red-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
             >
               Add Supplier
             </button>
-          </div>
-          <div className="w-48 h-10 mt-6 items-end ml-40 mr-6">
             <button
               onClick={generatePDF}
-              className="bg-green-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+              className="ml-4 bg-green-700 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
             >
               Generate PDF
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <Table striped bordered hover className='border-2'>
+        <div className="ml-30">
+          <Table striped bordered hover className='border-1'>
             <thead>
               <tr>
                 <th>Name</th>
@@ -178,10 +169,10 @@ const Supplier = () => {
                   <td>{supplier.Country}</td>
                   <td>{supplier.Category}</td>
                   <td>{supplier.Status}</td>
-                  <td><button onClick={() => handleEditSupplier(supplier._id)} className="bg-cyan-900 text-white font-bold py-1 px-2 rounded">
-                    Edit</button>
-                  </td>
                   <td>
+                    <button onClick={() => handleEditSupplier(supplier._id)} className="bg-cyan-900 text-white font-bold py-1 px-2 rounded">
+                      Edit
+                    </button>
                     <Checkbox
                       checked={selectedSuppliers.includes(supplier._id)}
                       onChange={() => handleCheckboxChange(supplier._id)}
@@ -195,6 +186,6 @@ const Supplier = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Supplier;
