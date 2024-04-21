@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdEdit, MdDelete, MdDescription } from "react-icons/md";
@@ -28,6 +28,7 @@ const Client = () => {
   const [filteredClients, setFilteredClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const tableRef = useRef(null);
 
   useEffect(() => {
     fetchData();
@@ -77,12 +78,19 @@ const Client = () => {
   };
 
   const generateReport = () => {
-    const doc = new jsPDF();
-    const table = document.querySelector(".table");
+    const doc = new jsPDF('p', 'mm', 'a4');
 
-    html2canvas(table).then((canvas) => {
+    html2canvas(tableRef.current).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
-      doc.addImage(imgData, "PNG", 10, 10);
+      
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = doc.internal.pageSize.getHeight();
+      
+      const imgWidth = pdfWidth - 20; // Subtracting margin
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      doc.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+      
       doc.save("client_report.pdf");
     });
   };
@@ -97,7 +105,7 @@ const Client = () => {
             </div>
             <div className="card-body ml-10">
               <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} sm={6} md={4}> 
+                <Grid item xs={12} sm={6} md={4}>
                   <TextField
                     type="text"
                     label="Search by Client Name"
@@ -146,12 +154,12 @@ const Client = () => {
             </div>
             <TableContainer
               style={{
-                maxHeight: "calc(122vh - 400px)", // Increased height
+                maxHeight: "calc(122vh - 400px)",
                 width: "100%",
-                overflowX: "auto", // Enable horizontal scrolling
+                overflowX: "auto",
               }}
             >
-              <Table size="small" className="table">
+              <Table size="small" className="table" ref={tableRef}>
                 <TableHead>
                   <TableRow>
                     <TableCell><strong>Client ID</strong></TableCell>
@@ -204,3 +212,5 @@ const Client = () => {
 };
 
 export default Client;
+
+

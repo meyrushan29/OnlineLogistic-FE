@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const CreateClient = () => {
   const [clientId, setClientId] = useState('');
   const [clientName, setClientName] = useState('');
@@ -27,10 +26,6 @@ const CreateClient = () => {
   const navigate = useNavigate();
 
   const [toastMessage, setToastMessage] = useState('');
-
-  const handleGenderChange = (event) => {
-    setGender(event.target.value);
-  };
 
   const validatePhone = (phoneNumber) => {
     const phoneRegex = /^\d{10}$/;
@@ -177,8 +172,8 @@ const CreateClient = () => {
               {validationErrors.address && <p className="text-red-500 text-sm mt-1">{validationErrors.address}</p>}
             </div>
 
-            {/* Gender Input */}
-           
+            {/* Gender Select */}
+            
 
             {/* Email Input */}
             <div>
@@ -192,6 +187,7 @@ const CreateClient = () => {
               />
               {validationErrors.email && <p className="text-red-500 text-sm mt-1">{validationErrors.email}</p>}
             </div>
+            
 
             {/* Billing Address Input */}
             <div>
@@ -204,6 +200,20 @@ const CreateClient = () => {
                 className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.billingAddress ? 'ring-red-500' : ''}`}
               />
               {validationErrors.billingAddress && <p className="text-red-500 text-sm mt-1">{validationErrors.billingAddress}</p>}
+            </div>
+            <div>
+              <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Gender</label>
+              <select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.gender ? 'ring-red-500' : ''}`}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
             </div>
 
             {/* Status Select */}
@@ -222,42 +232,12 @@ const CreateClient = () => {
               </select>
               {validationErrors.status && <p className="text-red-500 text-sm mt-1">{validationErrors.status}</p>}
             </div>
-            <div className="flex gap-3">
-            <label className="mb-2 inline-block lg:text-lg text-gray-800 sm:text-base">Gender</label>
-
-              <div>
-                <input
-                  id="male"
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  checked={gender === 'male'}
-                  onChange={handleGenderChange}
-                  className="peer m-2"
-                />
-                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Male</label>
-              </div>
-              <div>
-                <input
-                  id="female"
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  checked={gender === 'female'}
-                  onChange={handleGenderChange}
-                  className="peer m-2"
-                />
-                <label className="mb-2 inline-block text-sm text-gray-800 sm:text-base">Female</label>
-              </div>
-              {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
-            </div>
 
             {/* Submit Button */}
-            <div className="flex items-center justify-between sm:col-span-2">
+            <div className="flex items-center justify-between sm:col-span-1 mt-14 mx-8 ">
               <button
                 type="submit"
-                className="inline-block rounded-lg bg-green-400 px-8 py-3 text-center text-sm font-semibold md:text-base"
-              >
+                className="inline-block rounded-lg bg-green-500 px-8 py-3 text-center text-sm font-semibold md:text-base mx-60">
                 Add
               </button>
             </div>
