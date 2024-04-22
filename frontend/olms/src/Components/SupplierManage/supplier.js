@@ -116,14 +116,14 @@ const Supplier = () => {
           <div className='col-span-2 flex justify-end items-end'>
             <button
               onClick={handleDeleteSelected}
-              className={`bg-pink-700 hover:bg-blue-900 text-white font-bold  py-2 px-4 rounded-lg mr-2 ${selectedSuppliers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+              className={`bg-pink-700 hover:bg-red-800 text-white font-bold  py-2 px-4 rounded-lg mr-2 ${selectedSuppliers.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
               disabled={selectedSuppliers.length === 0}
             >
               Delete Selected
             </button>
             <button
               onClick={handleAddSupplier}
-              className="mr-2 bg-red-900 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+              className="mr-2 bg-blue-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg"
             >
               Add Supplier
             </button>

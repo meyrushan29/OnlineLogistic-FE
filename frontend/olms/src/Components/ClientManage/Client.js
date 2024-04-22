@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -146,7 +147,7 @@ const Client = () => {
                   >
                     Generate Report <MdDescription />
                   </Button>
-                  <Link to="/create" className="btn btn-success mr-10">
+                  <Link to="/create" className="btn btn-primary mr-10">
                     Add Client
                   </Link>
                 </Grid>
@@ -187,7 +188,7 @@ const Client = () => {
                       <TableCell align="center">
                         <Link
                           to={`/update/${client._id}`}
-                          className="btn btn-success me-2"
+                          className="btn btn-primary me-2"
                         >
                           <MdEdit />
                         </Link>
