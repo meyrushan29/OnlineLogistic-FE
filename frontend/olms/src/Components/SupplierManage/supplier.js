@@ -8,26 +8,20 @@ import 'jspdf-autotable';
 const Supplier = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchName, setSearchName] = useState('');
-  const [searchOID, setSearchOID] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [categories, setCategories] = useState([]);
   const [selectedSuppliers, setSelectedSuppliers] = useState([]);
 
   useEffect(() => {
-    fetchData();
+    axios.get('http://localhost:3001/sup')
+      .then(result => {
+        setSuppliers(result.data);
+        const uniqueCategories = Array.from(new Set(result.data.map(supplier => supplier.Category)));
+        setCategories(uniqueCategories);
+      })
+      .catch(err => console.log(err));
   }, []);
-
-  const fetchData = async () => {
-    try {
-      const result = await axios.get('http://localhost:3001/sup');
-      setSuppliers(result.data);
-      const uniqueCategories = [...new Set(result.data.map(supplier => supplier.Category))];
-      setCategories(uniqueCategories);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handleCheckboxChange = (supplierId) => {
     if (selectedSuppliers.includes(supplierId)) {
@@ -41,7 +35,12 @@ const Supplier = () => {
     if (window.confirm('Are you sure you want to delete the selected suppliers?')) {
       try {
         await axios.delete('http://localhost:3001/Deletesupplier/', { data: { ids: selectedSuppliers } });
-        fetchData();
+        // Refetch data after deletion
+        axios.get('http://localhost:3001/sup')
+          .then(result => {
+            setSuppliers(result.data);
+          })
+          .catch(err => console.log(err));
         setSelectedSuppliers([]);
       } catch (err) {
         console.log(err);
@@ -51,7 +50,6 @@ const Supplier = () => {
 
   const filteredSuppliers = suppliers.filter(supplier =>
     (supplier.Name?.toLowerCase().includes(searchName.toLowerCase()) || false) &&
-    (supplier.OrderID?.toLowerCase().includes(searchOID.toLowerCase()) || false) &&
     (selectedCategory ? supplier.Category === selectedCategory : true) &&
     (selectedStatus ? supplier.Status === selectedStatus : true)
   );
@@ -80,7 +78,6 @@ const Supplier = () => {
   };
 
   return (
-    
     <div className="container px-10 py-6 w-60 mx-10">
       <div className="bg-white border-8 rounded-lg shadow ml-40 ">
         <h1 className="text-3xl font-bold mb-4 pl-10 pt-3">Supplier List</h1>
@@ -181,7 +178,6 @@ const Supplier = () => {
         </div>
       </div>
     </div>
-    
   );
 };
 
