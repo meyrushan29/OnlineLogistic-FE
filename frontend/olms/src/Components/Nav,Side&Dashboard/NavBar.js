@@ -28,7 +28,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   };
 
   return (
-    <nav className='bg-gray-800 px-8 py-3 flex justify-between'>
+    <nav className='bg-blue-600 px-8 py-3 flex justify-between'>
       <div className='flex items-center text-xl'>
         <FaBars className='text-white me-4 cursor-pointer' onClick={toggleSidebar} />
         <span className='text-white font-semibold'>Sri Lanka Logistic Services</span>

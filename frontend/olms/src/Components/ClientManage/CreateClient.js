@@ -112,11 +112,11 @@ const CreateClient = () => {
   }, []);
 
   return (
-    <div className='fixed mt-16 ml-80 overflow-auto inset-0'>
+    <div className='fixed  mt-32 ml-80 overflow-auto inset-0'>
       <div className="bg-white py-6 sm:py-8 lg:py-2">
         <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
           <div className="mb-10 md:mb-10 text-lg">
-            <h2 className="mb-4 text-center text-lg font-bold text-gray-800 md:mb-6 lg:text-3xl">Add Client</h2>
+            <h2 className="mb-4 text-center text-lg font-bold text-gray-800 md:mb-6 lg:text-3xl ">Add Client Details</h2>
           </div>
 
           <form onSubmit={handleSubmit} className="mx-auto grid max-w-screen-md gap-4 sm:grid-cols-2">
@@ -210,8 +210,8 @@ const CreateClient = () => {
                 onChange={(e) => setGender(e.target.value)}
                 className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.gender ? 'ring-red-500' : ''}`}
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
               {validationErrors.gender && <p className="text-red-500 text-sm mt-1">{validationErrors.gender}</p>}
             </div>
@@ -227,8 +227,8 @@ const CreateClient = () => {
                 className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.status ? 'ring-red-500' : ''}`}
               >
                 <option value="">Select Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
               </select>
               {validationErrors.status && <p className="text-red-500 text-sm mt-1">{validationErrors.status}</p>}
             </div>
@@ -237,7 +237,7 @@ const CreateClient = () => {
             <div className="flex items-center justify-between sm:col-span-1 mt-14 mx-8 ">
               <button
                 type="submit"
-                className="inline-block rounded-lg bg-green-500 px-8 py-3 text-center text-sm font-semibold md:text-base mx-60">
+                className="inline-block rounded-3xl bg-blue-400 px-8 py-3 text-center text-white font-semibold md:text-base mx-60">
                 Add
               </button>
             </div>

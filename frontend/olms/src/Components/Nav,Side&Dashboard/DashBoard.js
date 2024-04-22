@@ -9,9 +9,8 @@ const DashBoard = ({ sidebarToggle, setSidebarToggle }) => {
         <h1 className="text-4xl font-bold text-blue-700">Welcome to the Srilanka Logistice Services Dashboard!</h1>
         <br />
         <br />
-        
       </div>
-    </div>
+      </div>
   );
 };
 
