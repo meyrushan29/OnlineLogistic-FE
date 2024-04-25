@@ -4,7 +4,7 @@ import axios from "axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 const CustomerSupport = () => {
-  const [tickets, setTickets] = useState([]);
+  const [ticket, setTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -26,13 +26,13 @@ const CustomerSupport = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/deleteTicket/${id}`);
-      setTickets(tickets.filter(ticket => ticket._id !== id));
+      setTickets(ticket.filter(ticket => ticket._id !== id));
     } catch (error) {
-      console.error("Error deleting ticket:", error);
-    }
-  };
+      console.log(error);
+    }
+  }
 
-  const filteredTickets = tickets.filter((ticket) =>
+  const filteredTickets = ticket.filter((ticket) =>
     ticket.customerName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -55,7 +55,7 @@ const CustomerSupport = () => {
                   onChange={handleSearch}
                 />
               </div>
-              <Link to="/createTicket" className="btn btn-success mb-4">
+              <Link to="/createTickect" className="btn btn-success mb-4">
                 Create Ticket
               </Link>
               <div className="row">
@@ -74,7 +74,7 @@ const CustomerSupport = () => {
                     </thead>
                     <tbody>
                       {filteredTickets.map(ticket => (
-                        <tr key={ticket._id}>
+                        <tr key={ticket.ticketId}>
                           <td>{ticket.ticketId}</td>
                           <td>{ticket.customerName}</td>
                           <td>{ticket.email}</td>

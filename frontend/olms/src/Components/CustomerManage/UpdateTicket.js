@@ -4,21 +4,14 @@ import axios from 'axios';
 
 const UpdateTicket = () => {
   const { id } = useParams();
-  const [ticket, setTicket] = useState({
-    ticketId: "",
-    email:"",
-    title: "",
-    description: "",
-    status: ""
-  });
+  const [ticket, setTicket] = useState({});
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:3001/getTicket/${id}`)
       .then(response => {
-        const { ticketId, title, description, status ,email} = response.data;
-        setTicket({ ticketId, title, description, status,email });
+        setTicket(response.data);
       })
       .catch(err => console.log(err));
   }, [id]);
@@ -31,38 +24,14 @@ const UpdateTicket = () => {
     }));
   };
 
-  const validateForm = () => {
-    const errors = {};
-    if (!ticket.ticketId.trim()) {
-      errors.ticketId = "Ticket ID is required";
-    }
-    if (!ticket.email.trim()) {
-      errors.email = "Email is required";
-    }
-    if (!ticket.title.trim()) {
-      errors.title = "Title is required";
-    }
-    if (!ticket.description.trim()) {
-      errors.description = "Description is required";
-    }
-    if (!ticket.status.trim()) {
-      errors.status = "Status is required";
-    }
-    setErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isValid = validateForm();
-    if (isValid) {
-      axios.put(`http://localhost:3001/UpdateTicket/${id}`, ticket)
-        .then(() => {
-          console.log("Ticket updated successfully!");
-          navigate('../Customersupport'); // Redirect to home or any other appropriate page
-        })
-        .catch(err => console.log(err));
-    }
+    axios.put(`http://localhost:3001/UpdateTicket/${id}`, ticket)
+      .then(() => {
+        console.log("Ticket updated successfully!");
+        navigate('../customersupport'); 
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -81,7 +50,6 @@ const UpdateTicket = () => {
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.ticketId && 'border-red-500'}`}
               onChange={handleChange}
             />
-            {errors.ticketId && <p className="text-red-500 text-xs italic">{errors.ticketId}</p>}
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
@@ -91,7 +59,7 @@ const UpdateTicket = () => {
               name="email"
               value={ticket.email}
               placeholder="Enter Email"
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.ticketId && 'border-red-500'}`}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.email && 'border-red-500'}`}
               onChange={handleChange}
             />
             {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}

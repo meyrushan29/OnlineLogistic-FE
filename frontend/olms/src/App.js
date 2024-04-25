@@ -20,8 +20,6 @@ import Customersupport from './Components/CustomerManage/Customersupport';
 import CreateTicket from './Components/CustomerManage/CreateTicket';
 import UpdateTicket from './Components/CustomerManage/UpdateTicket';
 
-
-
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [count, setCount] = useState (0)
@@ -45,9 +43,7 @@ function App() {
       <Route path='/createsp' element={<CreateSupplier/>}></Route>
       <Route path='/updatesp/:id' element={<UpdateSupplier/>}></Route>  
     </Routes>
-
     
-
     <Routes>
       <Route path='/order' element={<OrderTable/>}></Route>
       <Route path='/ordermake' element={<MakeOrder/>}></Route>
@@ -61,10 +57,10 @@ function App() {
       <Route path='/home' element={<Home/>}></Route>
     </Routes>
 
-    <Routes>
+    <Routes> 
       <Route path='/customersupport' element={<Customersupport/>}></Route>
       <Route path='/createTickect' element={<CreateTicket/>}></Route>
-      <Route path='/updateTicket' element={<UpdateTicket/>}></Route>
+      <Route path='/updateTicket/:id' element={<UpdateTicket/>}></Route>
     </Routes>
 
 
