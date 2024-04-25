@@ -14,7 +14,7 @@ const CustomerSupport = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/cus');
+        const response = await axios.get('http://localhost:3001/getTicket/');
         setTickets(response.data);
       } catch (error) {
         console.log(error);
@@ -55,7 +55,7 @@ const CustomerSupport = () => {
                   onChange={handleSearch}
                 />
               </div>
-              <Link to="/CreateTicket" className="btn btn-success mb-4">
+              <Link to="/createTickect" className="btn btn-success mb-4">
                 Create Ticket
               </Link>
               <div className="row">
@@ -82,7 +82,7 @@ const CustomerSupport = () => {
                           <td>{ticket.title}</td>
                           <td>{ticket.status}</td>
                           <td>
-                            <Link to={`/UpdateTicket/${ticket._id}`} className="btn btn-success me-2">
+                            <Link to={`/updateTicket/${ticket._id}`} className="btn btn-success me-2">
                               <MdEdit />
                             </Link>
                             <button className="btn btn-danger" onClick={() => handleDelete(ticket._id)}>
