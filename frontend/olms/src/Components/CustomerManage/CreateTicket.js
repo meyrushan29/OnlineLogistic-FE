@@ -6,6 +6,7 @@ const CreateTicket = () => {
   const [customerName, setCustomerName] = useState('');
   const [issue, setIssue] = useState('');
   const[email,setEmail]=useState('');
+  const[title,setTitle]=useState('');
   const[status,setstatus]=useState('');
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
@@ -24,7 +25,8 @@ const CreateTicket = () => {
           customerName,
           email,
           issue,
-          status
+          title,
+          status 
         });
         console.log(response);
         setSuccessMessage('Ticket created successfully');
@@ -47,6 +49,10 @@ const CreateTicket = () => {
 
     if (!issue.trim()) {
       errors.issue = "Issue description is required";
+      isValid = false;
+    }
+    if (!title.trim()) {
+      errors.title = "Title is required";
       isValid = false;
     }
     if (!status.trim()) {
@@ -97,6 +103,17 @@ const CreateTicket = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
             {errors.email && <p className="text-red-500">{errors.email}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="title" className="block mb-1">Title</label>
+            <textarea
+              id="title"
+              placeholder="Type your title"
+              className="form-control"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {errors.title && <p className="text-red-500">{errors.title}</p>}
           </div>
           <div className="mb-4">
             <label htmlFor="status" className="block mb-1">Status</label>
