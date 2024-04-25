@@ -7,12 +7,19 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Client from './Components/ClientManage/Client';
 import CreateClient from './Components/ClientManage/CreateClient';
 import UpdateClient from './Components/ClientManage/UpdateClient';
-import CustomerSupport from './Components/CustomerManage/Customersupport';
-import CreateTicket from './Components/CustomerManage/CreateTicket';
-import UpdateTicket from './Components/CustomerManage/UpdateTicket';
+import CreateSupplier from './Components/SupplierManage/CreateSupplier';
+import UpdateSupplier from './Components/SupplierManage/UpdateSupplier';
+import Supplier from './Components/SupplierManage/supplier';
+import Home from './Components/Home/Home';
+import MakeOrder from './Components/OrderManage/MakeOrder';
+import OrderTable from './Components/OrderManage/OrderTable';
+import EditOrder from './Components/OrderManage/EditOrder';
 
+
+ 
 
 function App() {
+  // eslint-disable-next-line no-unused-vars
   const [count, setCount] = useState (0)
   const [sidebarToggle, setSidebarToggle] = useState(false);
 
@@ -29,13 +36,18 @@ function App() {
       <Route path='/update/:id' element={<UpdateClient/>}></Route>
       
     </Routes>
+
     <Routes>
-    <Route path='/Customersupport' element={<CustomerSupport/>}></Route>
-    <Route path='/CreateTicket' element={<CreateTicket/>}></Route>
-    <Route path='/UpdateTicket/:id' element={<UpdateTicket/>}></Route>
-    
+      <Route path='/supplier' element={<Supplier/>}></Route>
+      <Route path='/createsp' element={<CreateSupplier/>}></Route>
+      <Route path='/updatesp/:id' element={<UpdateSupplier/>}></Route>  
     </Routes>
-    
+
+    <Routes>
+      <Route path='/home' element={<Home/>}></Route>
+    </Routes>
+
+
   </BrowserRouter>
 
   );
