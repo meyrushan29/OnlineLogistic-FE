@@ -7,28 +7,28 @@ const CustomerSupport = () => {
   const [tickets, setTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
   useEffect(() => {
     const fetchTickets = async () => {
       try {
         const response = await axios.get('http://localhost:3001/getTicket/');
         setTickets(response.data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching tickets:", error);
       }
     };
     fetchTickets();
   }, []);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/deleteTicket/${id}`);
       setTickets(tickets.filter(ticket => ticket._id !== id));
     } catch (error) {
-      console.log(error);
+      console.error("Error deleting ticket:", error);
     }
   };
 
@@ -43,19 +43,19 @@ const CustomerSupport = () => {
           <div className="card shadow">
             <div className="card-header bg-white">
               <h5 className="card-title mb-0">Customer Support Tickets</h5>
-              <p className="card-title mb-0">Please complete this form and one of our agents will reply to you by email as soon as possible</p>
+              <p className="card-text">Please complete this form and one of our agents will reply to you by email as soon as possible</p>
             </div>
             <div className="card-body">
               <div className="mb-4">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search by Customer Name"
+                  placeholder="Search by Customer Name or Ticket ID"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
               </div>
-              <Link to="/createTickect" className="btn btn-success mb-4">
+              <Link to="/createTicket" className="btn btn-success mb-4">
                 Create Ticket
               </Link>
               <div className="row">
