@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper } from "@material-ui/core";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { Link } from 'react-router-dom';
 import axios from 'axios'; // Import axios for making HTTP requests
 
@@ -24,7 +25,7 @@ const OrderTable = () => {
   };
 
   const handleAddOrder = () => {
-    navigate('/make');
+    navigate('/ordermake');
   };
 
   const handleEdit = (_id) => {
