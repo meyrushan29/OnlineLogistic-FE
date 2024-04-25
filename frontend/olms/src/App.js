@@ -34,6 +34,7 @@ function App() {
       <Route path='/client' element={<Client/>}></Route>
       <Route path='/create' element={<CreateClient/>}></Route>
       <Route path='/update/:id' element={<UpdateClient/>}></Route>
+      
     </Routes>
 
     <Routes>
