@@ -65,7 +65,7 @@ const SideBar = ({ sidebarToggle }) => {
         </li>
         <br />
         <li className='mb-3 rounded hover:shadow hover:bg-blue-400'>
-          <Link to="/customer" className="flex items-center text-white px-2 py-2">
+          <Link to="/customersupport" className="flex items-center text-white px-2 py-2">
           <FaHeadset className='inline-block w-6 h-6 mr-4' />
           Support
          </Link>
