@@ -10,7 +10,7 @@ const CustomerSupport = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/getTicket/');
+        const response = await axios.get('http://localhost:3001/cus');
         setTickets(response.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
