@@ -14,17 +14,20 @@ import Home from './Components/Home/Home';
 import MakeOrder from './Components/OrderManage/MakeOrder';
 import OrderTable from './Components/OrderManage/OrderTable';
 import EditOrder from './Components/OrderManage/EditOrder';
+import Register from './Components/Login&Registation/Register';
+import Login from './Components/Login&Registation/Login';
+import Customersupport from './Components/CustomerManage/Customersupport';
+import CreateTicket from './Components/CustomerManage/CreateTicket';
+import UpdateTicket from './Components/CustomerManage/UpdateTicket';
 
 
- 
 
 function App() {
   // eslint-disable-next-line no-unused-vars
   const [count, setCount] = useState (0)
   const [sidebarToggle, setSidebarToggle] = useState(false);
 
-  return (
-    
+  return ( 
   <BrowserRouter>
     <div className='flex'>
     <SideBar sidebarToggle={sidebarToggle} />
@@ -34,6 +37,7 @@ function App() {
       <Route path='/client' element={<Client/>}></Route>
       <Route path='/create' element={<CreateClient/>}></Route>
       <Route path='/update/:id' element={<UpdateClient/>}></Route>
+      
     </Routes>
 
     <Routes>
@@ -42,9 +46,27 @@ function App() {
       <Route path='/updatesp/:id' element={<UpdateSupplier/>}></Route>  
     </Routes>
 
+    
+
     <Routes>
+      <Route path='/order' element={<OrderTable/>}></Route>
+      <Route path='/ordermake' element={<MakeOrder/>}></Route>
+      <Route path='/editorder' element={<EditOrder/>}></Route>
+    </Routes>
+
+
+    <Routes>
+      <Route path='/reg' element={<Register/>}></Route>
+      <Route path='/login' element={<Login/>}></Route>
       <Route path='/home' element={<Home/>}></Route>
     </Routes>
+
+    <Routes>
+      <Route path='/customersupport' element={<Customersupport/>}></Route>
+      <Route path='/createTickect' element={<CreateTicket/>}></Route>
+      <Route path='/updateTicket' element={<UpdateTicket/>}></Route>
+    </Routes>
+
 
 
   </BrowserRouter>
