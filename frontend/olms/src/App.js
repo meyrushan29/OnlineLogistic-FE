@@ -62,9 +62,7 @@ function App() {
       <Route path='/createTickect' element={<CreateTicket/>}></Route>
       <Route path='/updateTicket/:id' element={<UpdateTicket/>}></Route>
     </Routes>
-
-
-
+    
   </BrowserRouter>
 
   );

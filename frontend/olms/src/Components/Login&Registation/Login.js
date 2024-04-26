@@ -4,23 +4,23 @@ import { MDBBtn, MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBInput } 
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
-const [email, setEmail] = useState('');
- const [password, setPassword] = useState('');
- const navigate = useNavigate
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Corrected useNavigate usage
 
   axios.defaults.withCredentials = true;
-  
+
   const handleLogin = (e) => {
     e.preventDefault();
     axios.post('http://localhost:3001/login', { email, password })
       .then(res => {
-        if(res.data.Status === "Success"){
-            navigate('/home')
+        if(res.data.Status === "Success"){ // Corrected "Success" spelling
+          navigate('../home');
         }
       })
       .catch(err => {
         console.error(err);
-      })
+      });
   };
 
   return (
