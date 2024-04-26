@@ -53,7 +53,7 @@ const Home = () => {
 
   return (
     <div className="flex">
-      <div className='w-[40%] h-[40%] bg-gradient-to-t from-cyan-50 to-blue-500 rounded-lg shadow-md  ml-72 '>
+      <div className='w-[40%] h-[40%] bg-gradient-to-t from-cyan-50 bg-[#215E88] rounded-lg shadow-md  ml-72 '>
         <div className='flex flex-col justify-end items-center gap-28'>
           <div className='text-[32px] '>
             <label className='text-white font-serif mt-3'>Client, Supplier, Orders & Complaints</label>
