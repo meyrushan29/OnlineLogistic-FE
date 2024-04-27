@@ -90,6 +90,7 @@ const UpdateClient = () => {
                 id="client-id"
                 name="clientId"
                 value={client.clientId}
+                disabled
                 onChange={handleChange}
                 className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${errors.clientId ? 'ring-red-500' : ''}`}
               />

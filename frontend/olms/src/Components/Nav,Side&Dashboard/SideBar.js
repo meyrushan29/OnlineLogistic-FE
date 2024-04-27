@@ -9,7 +9,7 @@ const SideBar = ({ sidebarToggle }) => {
   };
 
   return (
-    <div className={`${sidebarToggle ? "hidden" : "block"} w-64 bg-blue-500 fixed h-full px-4 py-2`}>
+    <div className={`${sidebarToggle ? "hidden" : "block"} w-64 bg-[#215E88] fixed h-full px-4 py-2`}>
       <div className='my-2'>
         <h1 className='text-2xl text-white font-bold'>  - Dashboard - </h1>
       </div>

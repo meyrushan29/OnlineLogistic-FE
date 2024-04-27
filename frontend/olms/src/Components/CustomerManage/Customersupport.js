@@ -4,35 +4,35 @@ import axios from "axios";
 import { MdEdit, MdDelete } from "react-icons/md";
 
 const CustomerSupport = () => {
-  const [tickets, setTickets] = useState([]);
+  const [ticket, setTickets] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/getTicket/');
+        const response = await axios.get('http://localhost:3001/cus');
         setTickets(response.data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching tickets:", error);
       }
     };
     fetchTickets();
   }, []);
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/deleteTicket/${id}`);
-      setTickets(tickets.filter(ticket => ticket._id !== id));
+      setTickets(ticket.filter(ticket => ticket._id !== id));
     } catch (error) {
       console.log(error);
-    }
-  };
+    }
+  }
 
-  const filteredTickets = tickets.filter((ticket) =>
+  const filteredTickets = ticket.filter((ticket) =>
     ticket.customerName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -43,14 +43,14 @@ const CustomerSupport = () => {
           <div className="card shadow">
             <div className="card-header bg-white">
               <h5 className="card-title mb-0">Customer Support Tickets</h5>
-              <p className="card-title mb-0">Please complete this form and one of our agents will reply to you by email as soon as possible</p>
+              <p className="card-text">Please complete this form and one of our agents will reply to you by email as soon as possible</p>
             </div>
             <div className="card-body">
               <div className="mb-4">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search by Customer Name"
+                  placeholder="Search by Customer Name or Ticket ID"
                   value={searchTerm}
                   onChange={handleSearch}
                 />
@@ -73,7 +73,7 @@ const CustomerSupport = () => {
                     </thead>
                     <tbody>
                       {filteredTickets.map(ticket => (
-                        <tr key={ticket._id}>
+                        <tr key={ticket.ticketId}>
                           <td>{ticket.ticketId}</td>
                           <td>{ticket.customerName}</td>
                           <td>{ticket.email}</td>
