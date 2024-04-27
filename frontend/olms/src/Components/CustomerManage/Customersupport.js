@@ -67,7 +67,6 @@ const CustomerSupport = () => {
                         <th>Customer Name</th>
                         <th>Email</th>
                         <th>Issue</th>
-                        <th>Title</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -79,7 +78,6 @@ const CustomerSupport = () => {
                           <td>{ticket.customerName}</td>
                           <td>{ticket.email}</td>
                           <td>{ticket.issue}</td>
-                          <td>{ticket.title}</td>
                           <td>{ticket.status}</td>
                           <td>
                             <Link to={`/updateTicket/${ticket._id}`} className="btn btn-success me-2">
