@@ -6,6 +6,7 @@ const SideBar = ({ sidebarToggle }) => {
   const handleLogout = () => {
 
     console.log("Logout clicked"); 
+    window.location.href = '/';
   };
 
   return (
@@ -71,12 +72,12 @@ const SideBar = ({ sidebarToggle }) => {
          </Link>
          <hr />
       </li>
-        <li className='mb-3 rounded hover:shadow hover:bg-blue-400'>
+        <Link to='/'><li className='mb-3 rounded hover:shadow hover:bg-blue-400'>
           <button onClick={handleLogout} className="flex items-center text-white px-1 py-">
             <FaSignOutAlt className='inline-block w-6 h-6 mr-4' />
             Logout
           </button>
-        </li>
+        </li></Link>
       </ul>
     </div>
   );
