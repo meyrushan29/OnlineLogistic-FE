@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import SideBar from './Components/Nav,Side&Dashboard/SideBar';
 import DashBoard from './Components/Nav,Side&Dashboard/DashBoard';
 import 'bootstrap/dist/css/bootstrap.min.css'
+// eslint-disable-next-line no-unused-vars
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Client from './Components/ClientManage/Client';
 import CreateClient from './Components/ClientManage/CreateClient';
@@ -27,8 +28,10 @@ function App() {
       {/* Conditional rendering for Sidebar and Dashboard */}
       {window.location.pathname !== '/reg' && window.location.pathname !== '/' &&
         <>
+          <div className='flex'>
           <SideBar sidebarToggle={sidebarToggle} />
           <DashBoard sidebarToggle={sidebarToggle} setSidebarToggle={setSidebarToggle} />
+          </div>
         </>
       }
       <Routes>
