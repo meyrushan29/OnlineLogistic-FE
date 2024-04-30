@@ -70,14 +70,14 @@ const SideBar = ({ sidebarToggle }) => {
           <FaHeadset className='inline-block w-6 h-6 mr-4' />
           Support
          </Link>
-         <hr />
+         <br />
       </li>
-        <Link to='/'><li className='mb-3 rounded hover:shadow hover:bg-blue-400'>
+        <li className='mb-3 rounded hover:shadow hover:bg-blue-400'>
           <button onClick={handleLogout} className="flex items-center text-white px-1 py-">
-            <FaSignOutAlt className='inline-block w-6 h-6 mr-4' />
+            <FaSignOutAlt className='inline-block w-6 h-7 mr-5' />
             Logout
           </button>
-        </li></Link>
+        </li>
       </ul>
     </div>
   );
