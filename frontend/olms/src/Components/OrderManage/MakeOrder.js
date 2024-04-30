@@ -15,29 +15,6 @@ const MakeOrder = () => {
   const districtCities = {
     "Ampara": ["Ampara", "Kalmunai", "Sainthamaruthu"],
     "Anuradhapura": ["Anuradhapura", "Kekirawa", "Talawa"],
-    "Badulla": ["Badulla", "Bandarawela", "Haputale"],
-    "Batticaloa": ["Batticaloa", "Kattankudy", "Valaichchenai"],
-    "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Sri Jayawardenepura Kotte"],
-    "Galle": ["Galle", "Ambalangoda", "Hikkaduwa"],
-    "Gampaha": ["Gampaha", "Negombo", "Kelaniya"],
-    "Hambantota": ["Hambantota", "Tangalle", "Ambalantota"],
-    "Jaffna": ["Jaffna", "Point Pedro", "Chavakachcheri"],
-    "Kalutara": ["Kalutara", "Panadura", "Horana"],
-    "Kandy": ["Kandy", "Nuwara Eliya", "Gampola"],
-    "Kegalle": ["Kegalle", "Mawanella", "Dehiowita"],
-    "Kilinochchi": ["Kilinochchi", "Poonakary", "Pachchilaipalli"],
-    "Kurunegala": ["Kurunegala", "Kuliyapitiya", "Narammala"],
-    "Mannar": ["Mannar", "Nanaddan", "Musali"],
-    "Matale": ["Matale", "Dambulla", "Rattota"],
-    "Matara": ["Matara", "Weligama", "Hakmana"],
-    "Monaragala": ["Monaragala", "Wellawaya", "Bibile"],
-    "Mullaitivu": ["Mullaitivu", "Mulliyawalai", "Puthukkudiyiruppu"],
-    "Nuwara Eliya": ["Nuwara Eliya", "Kotagala", "Maskeliya"],
-    "Polonnaruwa": ["Polonnaruwa", "Hingurakgoda", "Medirigiriya"],
-    "Puttalam": ["Puttalam", "Chilaw", "Anamaduwa"],
-    "Ratnapura": ["Ratnapura", "Embilipitiya", "Balangoda"],
-    "Trincomalee": ["Trincomalee", "Kinniya", "Thambalagamuwa"],
-    "Vavuniya": ["Vavuniya", "Chettikulam", "Nedunkeni"]
     // Add more districts and cities as needed
   };
 
@@ -48,6 +25,12 @@ const MakeOrder = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Basic form validation
+    if (!productName || !quantity || !district || !city || !deliveryAddress) {
+      console.error('Please fill in all fields.');
+      return;
+    }
 
     const currentDate = new Date().toISOString().split('T')[0];
 
@@ -80,7 +63,7 @@ const MakeOrder = () => {
     } catch (error) {
       console.error('Error submitting order:', error);
     }
-  };
+  }; 
 
   const handleDistrictChange = (event) => {
     const selectedDistrict = event.target.value;

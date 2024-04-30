@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Button, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper } from "@material-ui/core";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
-import { Link } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios'; 
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch orders when component mounts
     fetchOrders();
   }, []);
 
@@ -29,14 +26,12 @@ const OrderTable = () => {
   };
 
   const handleEdit = (_id) => {
-    navigate(`../edit/${_id}`);
+    navigate(`/editorder/${_id}`);
   };
 
   const handleDelete = async (_id) => {
     try {
-      // Send a DELETE request to remove the order with the given id from the server
       await axios.delete(`http://localhost:3001/deleteorder/${_id}`);
-      // Update the orders state after successful deletion
       setOrders(orders.filter(order => order._id !== _id));
     } catch (error) {
       console.error('Error deleting order:', error);

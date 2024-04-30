@@ -45,9 +45,9 @@ function App() {
     </Routes>
     
     <Routes>
-      <Route path='/order' element={<OrderTable/>}></Route>
-      <Route path='/ordermake' element={<MakeOrder/>}></Route>
-      <Route path='/editorder' element={<EditOrder/>}></Route>
+      <Route path='/order' element={<OrderTable />} />
+      <Route path='/ordermake' element={<MakeOrder />} />
+      <Route path='/editorder/:id' element={<EditOrder />} />
     </Routes>
 
 

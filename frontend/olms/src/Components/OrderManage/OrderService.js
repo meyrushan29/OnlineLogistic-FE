@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './OrderService.css'; // Import CSS file for component styling
+import { Button } from '@material-ui/core';
 
 const OrderService = () => {
   const [showNewOrderForm, setShowNewOrderForm] = useState(false);
-  
+
   const handleNewOrderClick = () => {
     setShowNewOrderForm(true);
   };
@@ -27,16 +27,16 @@ const OrderService = () => {
     <div className="order-service-container">
       <h1>Order Service Page</h1>
       <div className="button-container">
-        <button onClick={handleNewOrderClick}>New Order</button>
-        <button onClick={handleOrderHistoryClick}>Order History</button>
+        <Button variant="contained" color="primary" onClick={handleNewOrderClick}>New Order</Button>
+        <Button variant="contained" color="primary" onClick={handleOrderHistoryClick}>Order History</Button>
       </div>
       {showNewOrderForm && (
         <form onSubmit={handleNewOrderSubmit} className="new-order-form">
           <h2>New Order Form</h2>
           {/* Form fields go here */}
           <div className="form-buttons">
-            <button type="submit">Submit</button>
-            <button type="button" onClick={handleCancelNewOrder}>Cancel</button>
+            <Button type="submit" variant="contained" color="primary">Submit</Button>
+            <Button type="button" variant="contained" color="secondary" onClick={handleCancelNewOrder}>Cancel</Button>
           </div>
         </form>
       )}
