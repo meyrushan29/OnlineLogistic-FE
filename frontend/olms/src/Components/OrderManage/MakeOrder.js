@@ -48,9 +48,7 @@ const MakeOrder = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const currentDate = new Date().toISOString().split('T')[0];
-
     const orderData = {
       orderId: generateProductId(),
       productName,
@@ -62,7 +60,7 @@ const MakeOrder = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3001/ord/', orderData);
+      const response = await axios.post('http://localhost:3001/createorder', orderData);
 
       console.log('Order submitted successfully:', response.data);
 

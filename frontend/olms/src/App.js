@@ -25,7 +25,6 @@ function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   return ( 
     <BrowserRouter>
-      {/* Conditional rendering for Sidebar and Dashboard */}
       {window.location.pathname !== '/reg' && window.location.pathname !== '/' &&
         <>
           <div className='flex'>
@@ -47,9 +46,7 @@ function App() {
         <Route path='/customersupport' element={<Customersupport/>}></Route>
         <Route path='/createTickect' element={<CreateTicket/>}></Route>
         <Route path='/updateTicket/:id' element={<UpdateTicket/>}></Route>
-
-        {/* Redirect to Home if no matching route found */}
-        {/* <Route path='*' element={<Navigate to="/home" />} /> */}
+        
         <Route path='/reg' element={<Register/>}></Route>
         <Route path='/' element={<Login/>}></Route>
         <Route path='/home' element={<Home/>}></Route>
