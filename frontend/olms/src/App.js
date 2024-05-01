@@ -20,6 +20,10 @@ import Login from './Components/Login&Registation/Login';
 import Customersupport from './Components/CustomerManage/Customersupport';
 import CreateTicket from './Components/CustomerManage/CreateTicket';
 import UpdateTicket from './Components/CustomerManage/UpdateTicket';
+import Shipping from './Components/ShippingManage/Shipping';
+import CreateShipping from './Components/ShippingManage/CreateShipping';
+import UpdateShipping from './Components/ShippingManage/UpdateShipping';
+import ShippingHome from './Components/ShippingManage/ShippingHome';
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -47,6 +51,11 @@ function App() {
         <Route path='/customersupport' element={<Customersupport/>}></Route>
         <Route path='/createTickect' element={<CreateTicket/>}></Route>
         <Route path='/updateTicket/:id' element={<UpdateTicket/>}></Route>
+
+        <Route path='/shipping' element={<Shipping/>}></Route>
+        <Route path='/createshipping' element={<CreateShipping/>}></Route>
+        <Route path='/updateshipping/:id' element={<UpdateShipping/>}></Route>
+        <Route path='/shippingHome' element={<ShippingHome/>}></Route>
 
         {/* Redirect to Home if no matching route found */}
         {/* <Route path='*' element={<Navigate to="/home" />} /> */}
