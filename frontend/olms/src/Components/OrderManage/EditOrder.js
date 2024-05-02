@@ -1,169 +1,129 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Paper, TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const EditOrder = () => {
-  const [order, setOrder] = useState({
-    productName: '',
-    quantity: '',
-    district: '',
-    city: '',
-    deliveryAddress: '',
-    orderedDate: ''
-  });
-
-  const [districtCities, setDistrictCities] = useState({});
-
-  const navigate = useNavigate();
   const { id } = useParams();
+  const [order, setOrder] = useState({});
+  // eslint-disable-next-line no-unused-vars
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchOrder();
-    // Set district cities once on component mount
-    const districtCities = {
-      "Ampara": ["Ampara", "Kalmunai", "Sainthamaruthu"],
-      "Anuradhapura": ["Anuradhapura", "Kekirawa", "Talawa"],
-      "Badulla": ["Badulla", "Bandarawela", "Haputale"],
-      "Batticaloa": ["Batticaloa", "Kattankudy", "Valaichchenai"],
-      "Colombo": ["Colombo", "Dehiwala-Mount Lavinia", "Sri Jayawardenepura Kotte"],
-      "Galle": ["Galle", "Ambalangoda", "Hikkaduwa"],
-      "Gampaha": ["Gampaha", "Negombo", "Kelaniya"],
-      "Hambantota": ["Hambantota", "Tangalle", "Ambalantota"],
-      "Jaffna": ["Jaffna", "Point Pedro", "Chavakachcheri"],
-      "Kalutara": ["Kalutara", "Panadura", "Horana"],
-      "Kandy": ["Kandy", "Nuwara Eliya", "Gampola"],
-      "Kegalle": ["Kegalle", "Mawanella", "Dehiowita"],
-      "Kilinochchi": ["Kilinochchi", "Poonakary", "Pachchilaipalli"],
-      "Kurunegala": ["Kurunegala", "Kuliyapitiya", "Narammala"],
-      "Mannar": ["Mannar", "Nanaddan", "Musali"],
-      "Matale": ["Matale", "Dambulla", "Rattota"],
-      "Matara": ["Matara", "Weligama", "Hakmana"],
-      "Monaragala": ["Monaragala", "Wellawaya", "Bibile"],
-      "Mullaitivu": ["Mullaitivu", "Mulliyawalai", "Puthukkudiyiruppu"],
-      "Nuwara Eliya": ["Nuwara Eliya", "Kotagala", "Maskeliya"],
-      "Polonnaruwa": ["Polonnaruwa", "Hingurakgoda", "Medirigiriya"],
-      "Puttalam": ["Puttalam", "Chilaw", "Anamaduwa"],
-      "Ratnapura": ["Ratnapura", "Embilipitiya", "Balangoda"],
-      "Trincomalee": ["Trincomalee", "Kinniya", "Thambalagamuwa"],
-      "Vavuniya": ["Vavuniya", "Chettikulam", "Nedunkeni"]
-      // Add more districts and cities as needed
-    };
+    axios.get(`http://localhost:3001/getOrder/${id}`)
+      .then(response => {
+        setOrder(response.data);
+      })
+      .catch(err => console.log(err));
   }, [id]);
 
-  const fetchOrder = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/getorders/${id}`);
-      const orderData = response.data;
-      setOrder(orderData);
-    } catch (error) {
-      console.error('Error fetching order:', error);
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setOrder(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      await axios.put(`http://localhost:3001/updateorders/${id}`, order);
-      navigate('/order');
-    } catch (error) {
-      console.error('Error updating order:', error);
-    }
-  };
-
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setOrder({ ...order, [name]: value });
-  };
-
-  const handleDistrictChange = (event) => {
-    const selectedDistrict = event.target.value;
-    setOrder({ ...order, district: selectedDistrict, city: '' });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.put(`http://localhost:3001/UpdateOrder/${id}`, order)
+      .then(() => {
+        console.log("Order updated successfully!");
+        navigate('../order'); 
+      })
+      .catch(err => console.log(err));
   };
 
   return (
-    <div className="container-fluid mt-2 mb-2" style={{ marginTop: "100px", marginLeft: "150px", marginRight: "150px" }}>
-      <Grid container justifyContent="center">
-        <Grid item xs={12} md={8}>
-          <Paper elevation={3} style={{ padding: '20px' }}>
-            <div className="card-header bg-white">
-              <h5 className="card-title mb-0">Edit Order</h5>
-              <div style={{ marginBottom: '20px' }}></div>
-            </div>
-            <div className="card-body">
-              <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      type="text"
-                      label="Product Name"
-                      name="productName"
-                      value={order.productName}
-                      onChange={handleChange}
-                      fullWidth
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      type="number"
-                      label="Quantity"
-                      name="quantity"
-                      value={order.quantity}
-                      onChange={handleChange}
-                      fullWidth
-                      inputProps={{ min: 1 }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>District</InputLabel>
-                      <Select
-                        value={order.district}
-                        onChange={handleDistrictChange}
-                      >
-                        {Object.keys(districtCities).map((districtName, index) => (
-                          <MenuItem key={index} value={districtName}>{districtName}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>City</InputLabel>
-                      <Select
-                        value={order.city}
-                        onChange={handleChange}
-                        name="city"
-                      >
-                        {districtCities[order.district] && districtCities[order.district].map((cityName, index) => (
-                          <MenuItem key={index} value={cityName}>{cityName}</MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      type="text"
-                      label="Delivery Address"
-                      name="deliveryAddress"
-                      value={order.deliveryAddress}
-                      onChange={handleChange}
-                      fullWidth
-                      multiline
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Button variant="contained" color="primary" type="submit">
-                      Update
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </div>
-          </Paper>
-        </Grid>
-      </Grid>
+    <div className="mt-0 ml-96">
+      <div className="w-1/2 bg-white rounded-lg p-6 shadow-md">
+        <form onSubmit={handleSubmit}>
+          <h2 className="text-lg font-semibold mb-4">Update Order</h2>
+          <div className="mb-4">
+            <label htmlFor="orderId" className="block text-gray-700 text-sm font-bold mb-2">Order ID</label>
+            <input
+              type="text"
+              id="orderId"
+              name="orderId"
+              value={order.orderId}
+              placeholder="Enter Order ID"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.orderId && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="productName" className="block text-gray-700 text-sm font-bold mb-2">Product Name</label>
+            <input
+              type="text"
+              id="productName"
+              name="productName"
+              value={order.productName}
+              placeholder="Enter Product Name"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.productName && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+            {errors.productName && <p className="text-red-500 text-xs italic">{errors.productName}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="itemId" className="block text-gray-700 text-sm font-bold mb-2">Item ID</label>
+            <input
+              type="text"
+              id="itemId"
+              name="itemId"
+              value={order.itemId}
+              placeholder="Enter Item ID"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.itemId && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+            {errors.itemId && <p className="text-red-500 text-xs italic">{errors.itemId}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="quantity" className="block text-gray-700 text-sm font-bold mb-2">Quantity</label>
+            <input
+              type="text"
+              id="quantity"
+              name="quantity"
+              value={order.quantity}
+              placeholder="Enter Quantity"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.quantity && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+            {errors.quantity && <p className="text-red-500 text-xs italic">{errors.quantity}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="orderDate" className="block text-gray-700 text-sm font-bold mb-2">Order Date</label>
+            <input
+              type="date"
+              id="orderDate"
+              name="orderDate"
+              value={order.orderDate}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.orderDate && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+            {errors.orderDate && <p className="text-red-500 text-xs italic">{errors.orderDate}</p>}
+          </div>
+          <div className="mb-4">
+            <label htmlFor="amount" className="block text-gray-700 text-sm font-bold mb-2">Amount</label>
+            <input
+              type="text"
+              id="amount"
+              name="amount"
+              value={order.amount}
+              placeholder="Enter Amount"
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.amount && 'border-red-500'}`}
+              onChange={handleChange}
+            />
+            {errors.amount && <p className="text-red-500 text-xs italic">{errors.amount}</p>}
+          </div>
+  
+          <div className="flex items-center justify-between">
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+             Update
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

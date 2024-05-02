@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper } from "@material-ui/core";
+import { Button, Table, TableContainer, TableHead, TableBody, TableRow, TableCell, Paper, TextField } from "@material-ui/core";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
-// eslint-disable-next-line no-unused-vars
-import { Link } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
+import axios from 'axios';
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterDate, setFilterDate] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch orders when component mounts
     fetchOrders();
   }, []);
 
@@ -25,51 +24,80 @@ const OrderTable = () => {
   };
 
   const handleAddOrder = () => {
-    navigate('/ordermake');
+    navigate('/createOrder');
   };
 
   const handleEdit = (_id) => {
-    navigate(`../edit/${_id}`);
+    navigate(`/updateOrder/${_id}`);
   };
 
   const handleDelete = async (_id) => {
     try {
-      // Send a DELETE request to remove the order with the given id from the server
-      await axios.delete(`http://localhost:3001/deleteorder/${_id}`);
-      // Update the orders state after successful deletion
+      await axios.delete(`http://localhost:3001/deleteOrder/${_id}`);
       setOrders(orders.filter(order => order._id !== _id));
     } catch (error) {
       console.error('Error deleting order:', error);
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleFilterDateChange = (event) => {
+    setFilterDate(event.target.value);
+  };
+
+  const filteredOrders = orders.filter(order => {
+    return (
+      order.productName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      (!filterDate || order.orderDate.includes(filterDate))
+    );
+  });
+
   return (
     <div className="container mt-5" style={{ marginLeft: '150px' }}>
       <div className="d-flex justify-content-center">
         <div>
           <Button variant="contained" color="primary" style={{ marginBottom: '20px' }} onClick={handleAddOrder}>Add Order</Button>
+          <div style={{ marginBottom: '20px' }}>
+            <TextField
+              label="Search by Product Name"
+              variant="outlined"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              style={{ marginRight: '10px' }}
+            />
+            <TextField
+              label="Filter by Date (YYYY-MM-DD)"
+              variant="outlined"
+              value={filterDate}
+              onChange={handleFilterDateChange}
+              style={{ marginRight: '10px' }}
+            />
+          </div>
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Product Name</TableCell>
+                  <TableCell>Item ID</TableCell>
                   <TableCell>Quantity</TableCell>
-                  <TableCell>District</TableCell>
-                  <TableCell>City</TableCell>
-                  <TableCell>Delivery Address</TableCell>
+                  <TableCell>Order Date</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {orders.map((order) => (
+                {filteredOrders.map((order) => (
                   <TableRow key={order._id}>
                     <TableCell>{order.orderId}</TableCell>
                     <TableCell>{order.productName}</TableCell>
+                    <TableCell>{order.itemId}</TableCell>
                     <TableCell>{order.quantity}</TableCell>
-                    <TableCell>{order.district}</TableCell>
-                    <TableCell>{order.city}</TableCell>
-                    <TableCell>{order.deliveryAddress}</TableCell>
+                    <TableCell>{order.orderDate}</TableCell>
+                    <TableCell>{order.amount}</TableCell>
                     <TableCell>
                       <Button variant="contained" color="primary" style={{ marginRight: '5px' }} onClick={() => handleEdit(order._id)}>
                         <MdEdit />

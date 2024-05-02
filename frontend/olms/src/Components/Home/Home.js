@@ -6,6 +6,7 @@ const Home = () => {
   const [supplierCount, setSupplierCount] = useState(null);
   const [orderCount, setOrderCount] = useState(null);
   const [complaintCount, setComplaintCount] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,7 +14,7 @@ const Home = () => {
       try {
         const clientResponse = await fetch('http://localhost:3001/api/admindashboard/clientcount');
         const supplierResponse = await fetch('http://localhost:3001/api/admindashboard/suppliercount');
-      //const orderResponse = await fetch('http://localhost:3001/api/admindashboard/ordercount');
+        const orderResponse = await fetch('http://localhost:3001/api/admindashboard/ordercount');
         const complaintResponse = await fetch('http://localhost:3001/api/admindashboard/complientcount');
 
       //  if (!clientResponse.ok || !supplierResponse.ok || !orderResponse.ok || !complaintResponse.ok) {
@@ -22,17 +23,17 @@ const Home = () => {
 
         const clientData = await clientResponse.json();
         const supplierData = await supplierResponse.json();
-      //const orderData = await orderResponse.json();
+        const orderData = await orderResponse.json();
         const complaintData = await complaintResponse.json();
 
         console.log('Client Data:', clientData); 
         console.log('Supplier Data:', supplierData); 
-      //console.log('Order Data:', orderData); 
+        console.log('Order Data:', orderData); 
         console.log('Complaint Data:', complaintData);
 
         setClientCount(clientData.count);
         setSupplierCount(supplierData.count);
-      //setOrderCount(orderData.count);
+        setOrderCount(orderData.count);
         setComplaintCount(complaintData.count);
       } catch (error) {
         console.error('Error fetching data:', error.message);
@@ -47,7 +48,7 @@ const Home = () => {
   const data = [
     { id: 0, value: clientCount, label: 'Clients' },
     { id: 1, value: supplierCount, label: 'Suppliers' },
-  //{ id: 2, value: orderCount, label: 'Orders' },
+    { id: 2, value: orderCount, label: 'Orders' },
     { id: 3, value: complaintCount, label: 'Complaints' }
   ];
 

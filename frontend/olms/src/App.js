@@ -12,9 +12,6 @@ import CreateSupplier from './Components/SupplierManage/CreateSupplier';
 import UpdateSupplier from './Components/SupplierManage/UpdateSupplier';
 import Supplier from './Components/SupplierManage/supplier';
 import Home from './Components/Home/Home';
-import MakeOrder from './Components/OrderManage/MakeOrder';
-import OrderTable from './Components/OrderManage/OrderTable';
-import EditOrder from './Components/OrderManage/EditOrder';
 import Register from './Components/Login&Registation/Register';
 import Login from './Components/Login&Registation/Login';
 import Customersupport from './Components/CustomerManage/Customersupport';
@@ -24,12 +21,14 @@ import Shipping from './Components/ShippingManage/Shipping';
 import CreateShipping from './Components/ShippingManage/CreateShipping';
 import UpdateShipping from './Components/ShippingManage/UpdateShipping';
 import ShippingHome from './Components/ShippingManage/ShippingHome';
+import OrderPage from './Components/OrderManage/OrderPage';
+import CreateOrder from './Components/OrderManage/CreateOrder';
+import EditOrder from './Components/OrderManage/EditOrder';
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
   return ( 
     <BrowserRouter>
-      {/* Conditional rendering for Sidebar and Dashboard */}
       {window.location.pathname !== '/reg' && window.location.pathname !== '/' &&
         <>
           <div className='flex'>
@@ -45,9 +44,7 @@ function App() {
         <Route path='/supplier' element={<Supplier/>}></Route>
         <Route path='/createsp' element={<CreateSupplier/>}></Route>
         <Route path='/updatesp/:id' element={<UpdateSupplier/>}></Route>  
-        <Route path='/order' element={<OrderTable/>}></Route>
-        <Route path='/ordermake' element={<MakeOrder/>}></Route>
-        <Route path='/editorder' element={<EditOrder/>}></Route>
+
         <Route path='/customersupport' element={<Customersupport/>}></Route>
         <Route path='/createTickect' element={<CreateTicket/>}></Route>
         <Route path='/updateTicket/:id' element={<UpdateTicket/>}></Route>
@@ -56,6 +53,12 @@ function App() {
         <Route path='/createshipping' element={<CreateShipping/>}></Route>
         <Route path='/updateshipping/:id' element={<UpdateShipping/>}></Route>
         <Route path='/shippingHome' element={<ShippingHome/>}></Route>
+
+
+        <Route path='/order' element={<OrderPage/>}></Route>
+        <Route path='/createOrder' element={<CreateOrder/>}></Route>
+        <Route path='/updateOrder/:id' element={<EditOrder/>}></Route>
+
 
         {/* Redirect to Home if no matching route found */}
         {/* <Route path='*' element={<Navigate to="/home" />} /> */}
