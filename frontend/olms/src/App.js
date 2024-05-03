@@ -24,6 +24,9 @@ import ShippingHome from './Components/ShippingManage/ShippingHome';
 import OrderPage from './Components/OrderManage/OrderPage';
 import CreateOrder from './Components/OrderManage/CreateOrder';
 import EditOrder from './Components/OrderManage/EditOrder';
+import WareHouse from './Components/WareHouseManage/WareHouse';
+import CreateWareHouse from './Components/WareHouseManage/CreateWareHouse';
+import EditWareHouse from './Components/WareHouseManage/EditWareHouse';
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -59,6 +62,10 @@ function App() {
         <Route path='/createOrder' element={<CreateOrder/>}></Route>
         <Route path='/updateOrder/:id' element={<EditOrder/>}></Route>
 
+
+        <Route path='/warehouse' element={<WareHouse/>}></Route>
+        <Route path='/createwarehouse' element={<CreateWareHouse/>}></Route>
+        <Route path='/updatewarehouse/:id' element={<EditWareHouse/>}></Route>
 
         {/* Redirect to Home if no matching route found */}
         {/* <Route path='*' element={<Navigate to="/home" />} /> */}
