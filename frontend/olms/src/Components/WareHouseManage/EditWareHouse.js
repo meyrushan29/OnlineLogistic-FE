@@ -39,7 +39,7 @@ const EditWareHouse = () => {
     <div className="mt-0 ml-96">
       <div className="w-1/2 bg-white rounded-lg p-6 shadow-md">
         <form onSubmit={handleSubmit}>
-          <h2 className="text-lg font-semibold mb-4">Update Order</h2>
+          <h2 className="text-lg font-semibold mb-4">Update WareHouse</h2>
           <div className="mb-4">
             <label htmlFor="warehouseId" className="block text-gray-700 text-sm font-bold mb-2">Warehouse ID</label>
             <input
