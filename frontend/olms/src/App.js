@@ -24,6 +24,10 @@ import ShippingHome from './Components/ShippingManage/ShippingHome';
 import OrderPage from './Components/OrderManage/OrderPage';
 import CreateOrder from './Components/OrderManage/CreateOrder';
 import EditOrder from './Components/OrderManage/EditOrder';
+import Inventory from './Components/Inventory/Inventory';
+import CreateInventory from './Components/Inventory/CreateInventory';
+import UpdateInventory from './Components/Inventory/UpdateInventory';
+
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -58,6 +62,12 @@ function App() {
         <Route path='/order' element={<OrderPage/>}></Route>
         <Route path='/createOrder' element={<CreateOrder/>}></Route>
         <Route path='/updateOrder/:id' element={<EditOrder/>}></Route>
+
+        
+      <Route path='/inventory' element={<Inventory/>}></Route>
+      <Route path='/createinventory' element={<CreateInventory/>}></Route>
+      <Route path='/updateinventory/:id' element={<UpdateInventory/>}></Route>
+    
 
 
         {/* Redirect to Home if no matching route found */}
