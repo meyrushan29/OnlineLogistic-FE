@@ -111,7 +111,7 @@ const CreateInventory = () => {
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f8f9fa', justifyContent: 'center', alignItems: 'center' }}>
+    <div style={{ display: 'flex', height: '100vh', backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
       <div style={{ width: '50%', backgroundColor: '#fff', borderRadius: '0.5rem', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)', fontFamily: 'Arial, sans-serif' }}>
         <form onSubmit={handleSubmit}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, lineHeight: 1.5, marginBottom: '1rem' }}>Create Inventory</h2>

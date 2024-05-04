@@ -24,7 +24,7 @@ const UpdateShipping = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/getShipping${id}`)
+    axios.get(`http://localhost:3001/getShipping/${id}`)
       .then(respon => {
         const { shipmentId, shippingType, email, phone, address, totalCost, countryTo, countryFrom,cusName,shippeddat,shippingStatus ,zipCode} = respon.data;
         setShipping({ shipmentId, shippingType, email, phone, address, totalCost, countryTo, countryFrom,cusName,shippeddat,shippingStatus,zipCode });
