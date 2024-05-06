@@ -43,7 +43,7 @@ const UpdateShipping = () => {
   const validateForm = () => {
     const errors = {};
     //shipping id validation function
-    if (!shipping.shippingId.trim()) {
+    if (!shipping.shipmentId || !shipping.shipmentId.trim()) {
       errors.shipmentId = "Shipping ID is required";
     }
     if (!shipping.shippingType.trim()) {
@@ -124,6 +124,7 @@ const UpdateShipping = () => {
               type="text"
               id="shipmentId"
               name="shipmentId"
+              readOnly
               value={shipping.shipmentId}
               placeholder="Enter Shipping ID"
               className="form-control"
@@ -263,17 +264,17 @@ const UpdateShipping = () => {
 
 
           <div className="mb-4">
-            <label htmlFor="shippeddat" className="block mb-1">Shipped  Date</label>
-            <select
-             type="date"
-              id="shippeddat"
-              name="shippeddat"
-              value={shipping.shippeddat}
-              className="form-control"
-              onChange={handleChange}
-            ></select>
-            {errors.shippeddat && <p className="text-red-500">{errors.shippeddat}</p>}
-          </div>
+                <label htmlFor="shippeddat" className="block mb-1">Shipped Date</label>
+                <input
+                     type="date"
+                     id="shippeddat"
+                     name="shippeddat"
+                     value={shipping.shippeddat}
+                     className="form-control"
+                     onChange={handleChange}
+                />
+               {errors.shippeddat && <p className="text-red-500">{errors.shippeddat}</p>}
+           </div>
 
 
           <div className="mb-4">
