@@ -3,6 +3,8 @@ import { Button, Table, TableContainer, TableHead, TableBody, TableRow, TableCel
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const WareHouse = () => {
   const [warehouse, setWarehouse] = useState([]);
@@ -28,12 +30,12 @@ const WareHouse = () => {
   };
 
   const handleEdit = (_id) => {
-    navigate(`/updatewarehouse/${_id}`);
+    navigate("/updatewarehouse/${_id}");
   };
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`http://localhost:3001/deletewarehouse/${_id}`);
+      await axios.delete("http://localhost:3001/deletewarehouse/${_id}");
       setWarehouse(warehouse.filter(item => item._id !== _id));
     } catch (error) {
       console.error('Error deleting order:', error);
@@ -42,6 +44,16 @@ const WareHouse = () => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const generatePDF = () => {
+    const input = document.getElementById('pdf-content');
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('warehouse_details.pdf');
+    });
   };
 
   const filteredWarehouse = warehouse.filter(item => {
@@ -56,6 +68,7 @@ const WareHouse = () => {
       <div className="row justify-content-center">
         <div className="col-md-8">
           <button className="btn btn-primary mb-4" onClick={handleAddWarehouse}>Add WareHouseDetails</button>
+          <button className="btn btn-secondary mb-4 ml-2" onClick={generatePDF}>Generate PDF</button>
           <div className="mb-4">
             <TextField
               label="Search by WareHouseID"
@@ -65,7 +78,7 @@ const WareHouse = () => {
               className="mr-4"
             />
           </div>
-          <TableContainer component={Paper}>
+          <TableContainer component={Paper} id="pdf-content">
             <Table>
               <TableHead>
                 <TableRow>
