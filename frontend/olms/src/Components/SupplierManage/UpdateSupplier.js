@@ -94,7 +94,7 @@ function UpdateSupplier() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className='h-screen w-75 ml-96 mr-10'>
         <div className="bg-white shadow-md rounded px-2 pt-2 pb-2 w-full max-w-md mt-2">
           <form onSubmit={handleSubmit}>
@@ -103,7 +103,7 @@ function UpdateSupplier() {
               <TextField id="name" label="Name" placeholder="Enter Name" fullWidth value={Name} onChange={(e) => setName(e.target.value)} required />
             </div>
             <div className="mb-1">
-              <TextField id="ID" label="Supplier ID" placeholder="Enter Supplier ID" fullWidth value={SupplierID} onChange={(e) => setSupplierID(e.target.value)} required />
+              <TextField id="ID" label="Supplier ID" placeholder="Enter Supplier ID" fullWidth value={SupplierID} onChange={(e) => setSupplierID(e.target.value)} required disabled />
             </div>
             <div className='mb-1'>
               <TextField id="phoneNumber" label="Phone Number" placeholder="Enter Phone number" fullWidth value={PhoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />

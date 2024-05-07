@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
@@ -24,9 +25,9 @@ function Login() {
   
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-[#215E88] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full border rounded-md border-gray-300 p-6">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">Login</h2>
+        <h2 className="text-center text-3xl font-extrabold text-white">Login</h2>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
@@ -60,7 +61,7 @@ function Login() {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <a href="/reg" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="/reg" className="font-medium text-white hover:text-gray-200">
                 New User Register ?
               </a>
             </div>

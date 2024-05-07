@@ -36,6 +36,8 @@ const CustomerSupport = () => {
     ticket.customerName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  
+
   return (
     <div className="container">
       <div className="row justify-content-center">
@@ -55,7 +57,7 @@ const CustomerSupport = () => {
                   onChange={handleSearch}
                 />
               </div>
-              <Link to="/createTickect" className="btn btn-success mb-4">
+              <Link to="/createTickect" className="btn btn-primary mb-4">
                 Create Ticket
               </Link>
               <div className="row">
@@ -66,8 +68,9 @@ const CustomerSupport = () => {
                         <th>Ticket ID</th>
                         <th>Customer Name</th>
                         <th>Email</th>
-                        <th>Issue</th>
+                        <th>Phone Number</th>
                         <th>Title</th>
+                        <th>Issue</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -78,11 +81,12 @@ const CustomerSupport = () => {
                           <td>{ticket.ticketId}</td>
                           <td>{ticket.customerName}</td>
                           <td>{ticket.email}</td>
-                          <td>{ticket.issue}</td>
+                          <td>{ticket.phonenumber}</td>
                           <td>{ticket.title}</td>
+                          <td>{ticket.issue}</td>
                           <td>{ticket.status}</td>
                           <td>
-                            <Link to={`/updateTicket/${ticket._id}`} className="btn btn-success me-2">
+                            <Link to={`/updateTicket/${ticket._id}`} className="btn btn-primary me-2">
                               <MdEdit />
                             </Link>
                             <button className="btn btn-danger" onClick={() => handleDelete(ticket._id)}>

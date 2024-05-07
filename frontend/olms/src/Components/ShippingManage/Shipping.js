@@ -79,7 +79,7 @@ const Shipping = () => {
                           <td>{shipping.phone}</td>                    
                           
                           <td>
-                            <Link to={`/updateshipping/${shipping._id}`} className="btn btn-success btn-sm me-2">
+                            <Link to={`/updateshipping/${shipping._id}`} className=" btn btn-primary btn-sm me-2">
                               <BsPencilSquare />
                             </Link>
                             <button className="btn btn-danger btn-sm" onClick={() => handleDelete(shipping._id)}>

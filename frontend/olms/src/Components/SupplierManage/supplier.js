@@ -163,7 +163,7 @@ const Supplier = () => {
                   <td>{supplier.Category}</td>
                   <td>{supplier.Status}</td>
                   <td>
-                    <button onClick={() => handleEditSupplier(supplier._id)} className="bg-cyan-900 text-white font-bold py-1 px-2 rounded">
+                    <button onClick={() => handleEditSupplier(supplier._id)} className="btn btn-primary text-white font-bold py-1 px-2 rounded">
                       Edit
                     </button>
                     <Checkbox
