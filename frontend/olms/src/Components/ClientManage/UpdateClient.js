@@ -28,10 +28,20 @@ const UpdateClient = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setClient(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+
+    // Sanitize the client name input to allow only letters
+    if (name === 'clientName') {
+      const sanitizedValue = value.replace(/[^A-Za-z]/g, '');
+      setClient(prevState => ({
+        ...prevState,
+        [name]: sanitizedValue
+      }));
+    } else {
+      setClient(prevState => ({
+        ...prevState,
+        [name]: value
+      }));
+    }
   };
 
   const validateForm = () => {
@@ -211,4 +221,3 @@ const UpdateClient = () => {
 };
 
 export default UpdateClient;
-

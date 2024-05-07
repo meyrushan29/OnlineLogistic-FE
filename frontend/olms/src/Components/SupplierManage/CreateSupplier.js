@@ -14,6 +14,11 @@ const CreateSupplier = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [toastMessage, setToastMessage] = useState('');
 
+  const validateSupplierId = (SupplierID) => {
+    const clientIdRegex = /^SID-\d{4}$/;
+    return clientIdRegex.test(SupplierID);
+  };
+
   // Function to validate email
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
@@ -46,6 +51,13 @@ const CreateSupplier = () => {
       if (!Name || !Email || !PhoneNumber || !CompanyName || !Country || !Category || !Status || !SupplierID) {
         alert('Please fill in all required fields');
         return;
+      }
+
+      if (!validateSupplierId(SupplierID)) {
+        setValidationErrors({ ...validationErrors, SupplierID: 'Invalid Supplier ID format. It should be in the format SID-3846.' });
+        return;
+      } else {
+        setValidationErrors({ ...validationErrors, SupplierID: '' }); // Clear the error message if validation succeeds
       }
 
       // Check if email is valid
@@ -94,7 +106,7 @@ const CreateSupplier = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-100">
+    <div className="flex items-center justify-center ">
       <div className='h-screen mt-2 w-3/4 ml-96 mr-10'>
         <div className="bg-white shadow-md rounded mb-4 px-2 pt-2 pb-2 w-full max-w-md mt-1">
           <form onSubmit={handleSubmit}>

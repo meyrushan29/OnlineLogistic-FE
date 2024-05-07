@@ -140,7 +140,7 @@ const CreateClient = () => {
                 id="client-name"
                 name="client-name"
                 value={clientName}
-                onChange={(e) => setClientName(e.target.value)}
+                onChange={(e) => setClientName(e.target.value.replace(/[^A-Za-z]/g, ''))}
                 className={`w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-orange-300 transition duration-100 focus:ring ${validationErrors.clientName ? 'ring-red-500' : ''}`}
               />
               {validationErrors.clientName && <p className="text-red-500 text-sm mt-1">{validationErrors.clientName}</p>}

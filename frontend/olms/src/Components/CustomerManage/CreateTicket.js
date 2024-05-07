@@ -5,12 +5,23 @@ import { useNavigate } from 'react-router-dom';
 const CreateTicket = () => {
   const [customerName, setCustomerName] = useState('');
   const [issue, setIssue] = useState('');
-  const[email,setEmail]=useState('');
-  const[title,setTitle]=useState('');
-  const[status,setstatus]=useState('');
+  const [email, setEmail] = useState('');
+  const [phonenumber, setPhonenumber] = useState('');
+  const [title, setTitle] = useState('');
+  const [status, setStatus] = useState('');
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+
+  const validatePhoneNumber = (phonenumber) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phonenumber);
+  };
+
+  const validateTicketId = (ticketId) => {
+    const ticketIdRegex = /^TID-\d{4}$/;
+    return ticketIdRegex.test(ticketId);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,8 +35,9 @@ const CreateTicket = () => {
           ticketId,
           customerName,
           email,
-          issue,
+          phonenumber,
           title,
+          issue,
           status 
         });
         console.log(response);
@@ -44,6 +56,18 @@ const CreateTicket = () => {
 
     if (!customerName.trim()) {
       errors.customerName = "Customer Name is required";
+      isValid = false;
+    }
+    if (!email.trim()) {
+      errors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email is invalid";
+      isValid = false;
+    }
+
+    if (!validatePhoneNumber(phonenumber)) {
+      errors.phonenumber = "Phone Number is invalid";
       isValid = false;
     }
 
@@ -95,7 +119,8 @@ const CreateTicket = () => {
           </div>
           <div className="mb-4">
             <label htmlFor="email" className="block mb-1">Email</label>
-            <textarea
+            <input
+              type="text"
               id="email"
               placeholder="Type your email"
               className="form-control"
@@ -105,10 +130,23 @@ const CreateTicket = () => {
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </div>
           <div className="mb-4">
+            <label htmlFor="phonenumber" className="block mb-1">Phone Number</label>
+            <input
+              type="text"
+              id="phonenumber"
+              placeholder="Enter PhoneNumber"
+              className="form-control"
+              value={phonenumber}
+              onChange={(e) => setPhonenumber(e.target.value)}
+            />
+            {errors.phonenumber && <p className="text-red-500">{errors.phonenumber}</p>}
+          </div>
+          <div className="mb-4">
             <label htmlFor="title" className="block mb-1">Title</label>
-            <textarea
+            <input
+              type="text"
               id="title"
-              placeholder="Type your title"
+              placeholder="Enter Title"
               className="form-control"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -122,7 +160,7 @@ const CreateTicket = () => {
               placeholder="Status"
               className="form-control"
               value={status}
-              onChange={(e) => setstatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value)}
             />
             {errors.status && <p className="text-red-500">{errors.status}</p>}
           </div>

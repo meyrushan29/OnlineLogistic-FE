@@ -24,14 +24,44 @@ const UpdateTicket = () => {
     }));
   };
 
+  const validateForm = () => {
+    let validationErrors = {};
+    let isValid = true;
+
+    if (!ticket.email.trim()) {
+      validationErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(ticket.email)) {
+      validationErrors.email = "Email is invalid";
+      isValid = false;
+    }
+    if (!ticket.title.trim()) {
+      validationErrors.title = "Title is required";
+      isValid = false;
+    }
+    if (!ticket.description.trim()) {
+      validationErrors.description = "Description is required";
+      isValid = false;
+    }
+    if (!ticket.status.trim()) {
+      validationErrors.status = "Status is required";
+      isValid = false;
+    }
+
+    setErrors(validationErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3001/UpdateTicket/${id}`, ticket)
-      .then(() => {
-        console.log("Ticket updated successfully!");
-        navigate('../customersupport'); 
-      })
-      .catch(err => console.log(err));
+    if (validateForm()) {
+      axios.put(`http://localhost:3001/UpdateTicket/${id}`, ticket)
+        .then(() => {
+          console.log("Ticket updated successfully!");
+          navigate('../customersupport'); 
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   return (
@@ -47,7 +77,8 @@ const UpdateTicket = () => {
               name="ticketId"
               value={ticket.ticketId}
               placeholder="Enter Ticket ID"
-              className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.ticketId && 'border-red-500'}`}
+              disabled // <-- Disabled attribute added here
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               onChange={handleChange}
             />
           </div>
@@ -104,7 +135,7 @@ const UpdateTicket = () => {
           </div>
           <div className="flex items-center justify-between">
             <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-             Update
+              Update
             </button>
           </div>
         </form>

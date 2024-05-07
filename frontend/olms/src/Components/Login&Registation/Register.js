@@ -18,7 +18,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 mb-0">
+    <div className="min-h-screen flex items-center justify-center bg-[#215E88] py-12 px-4 sm:px-6 lg:px-8 mb-0">
       <div className="max-w-md w-full border rounded-md border-gray-300 p-6">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">Sign up</h2>
         <form className="mt-8 space-y-6" onSubmit={handleRegister}>
